@@ -107,7 +107,7 @@ public class Tables
     }
     
     /**
-     * @param the number of the table
+     * @param unknownTable //the number of the table
      * @return The corresponding table to the table number
      */
     public Table searchTable(int unknownTable)

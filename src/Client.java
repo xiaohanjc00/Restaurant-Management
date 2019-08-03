@@ -45,7 +45,7 @@ public class Client
     
     /**
      *Add a new name for the client
-     * @param  Name of the client
+     * @param  newName of the client
      */
     public void addName(String newName)
     {
