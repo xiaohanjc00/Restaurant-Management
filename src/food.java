@@ -1,30 +1,33 @@
-public class food {
 
-
-private String code;    //Code of the food
-private String name;    //Name of the food
+/**
+ * Write a description of class food here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class food
+{
+    // instance variables - replace the example below with your own
+    private int x;
 
     /**
-     * Each food available in the restaurant
-     * @param code of the new food
-     * @param name of the new food
+     * Constructor for objects of class food
      */
-    public food(String code, String name){
-        this.code = code;
-        this.name = name;
+    public food()
+    {
+        // initialise instance variables
+        x = 0;
     }
 
     /**
-     * @return the name of the food
+     * An example of a method - replace this comment with your own
+     *
+     * @param  y  a sample parameter for a method
+     * @return    the sum of x and y
      */
-    public String name(){
-        return name;
-    }
-
-    /**
-     * @return the code of the food
-     */
-    public String code(){
-        return code;
+    public int sampleMethod(int y)
+    {
+        // put your code here
+        return x + y;
     }
 }
