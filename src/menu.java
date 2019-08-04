@@ -64,8 +64,16 @@ public class menu extends Application {
     public void makeHorizontalPane(Pane parent)
     {
         Pane accessBox = new HBox();
-        accessBox.setPadding(new Insets(20));
-        parent.getChildren().add(accessBox);
+        accessBox.setPadding(new Insets(10));
+
+
+        Pane informationBox = new VBox();
+        //informationBox.setPadding(new Insets(15));
+
+        Pane firstLineInformation = new HBox();
+        firstLineInformation.setPadding(new Insets(5));
+
+        parent.getChildren().addAll(accessBox, informationBox);
 
         TextField nameField = new TextField();
         nameField.setPromptText("Name");
@@ -87,11 +95,17 @@ public class menu extends Application {
         phoneNumberField.setPromptText("Phone Number");
         phoneNumberField.setAlignment(Pos.CENTER);
 
+        TextField commentField = new TextField();
+        commentField.setPromptText("Comment");
+        commentField.setAlignment(Pos.CENTER);
+
         Button addButton = new Button("Add");
         addButton.setPrefWidth(100);
-        addButton.setPrefHeight(50);
+        addButton.setPrefHeight(60);
 
-        accessBox.getChildren().addAll(nameField, tableNumberField, numberOfPersonField, phoneNumberField, addButton);
+        firstLineInformation.getChildren().addAll(nameField, tableNumberField, numberOfPersonField, phoneNumberField);
+        informationBox.getChildren().addAll(firstLineInformation, commentField);
+        accessBox.getChildren().addAll(informationBox, addButton);
         ((HBox) accessBox).setSpacing(30);
     }
 }
