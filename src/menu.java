@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -7,11 +9,21 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import javax.print.DocFlavor;
+import java.awt.event.ActionEvent;
+import java.sql.Driver;
+
 public class menu extends Application {
 
     public static void main(String[] args) {
         launch(args);
     }
+
+    TextField nameField = new TextField();
+    TextField tableNumberField = new TextField();
+    TextField numberOfPersonField = new TextField();
+    TextField phoneNumberField = new TextField();
+    TextField commentField = new TextField();
 
     @Override
     public void start(Stage primaryStage) {
@@ -78,33 +90,34 @@ public class menu extends Application {
 
         parent.getChildren().addAll(accessBox, informationBox);
 
-        TextField nameField = new TextField();
+
         nameField.setPromptText("Name");
         //nameField.setPadding(new Insets(20));
         //nameField.setBorder(new Border(20));
         nameField.setAlignment(Pos.CENTER);
 
-        TextField tableNumberField = new TextField();
+
         tableNumberField.setPromptText("Table Number");
         tableNumberField.setPrefWidth(100);
         tableNumberField.setAlignment(Pos.CENTER);
 
-        TextField numberOfPersonField = new TextField();
+
         numberOfPersonField.setPromptText("Nº of Person");
         numberOfPersonField.setPrefWidth(100);
         numberOfPersonField.setAlignment(Pos.CENTER);
 
-        TextField phoneNumberField = new TextField();
+
         phoneNumberField.setPromptText("Phone Number");
         phoneNumberField.setAlignment(Pos.CENTER);
 
-        TextField commentField = new TextField();
+
         commentField.setPromptText("Comment");
         commentField.setAlignment(Pos.CENTER);
 
         Button addButton = new Button("Add");
         addButton.setPrefWidth(100);
         addButton.setPrefHeight(60);
+        addButton.setOnAction(this::addClient);
 
         //add all components to its pane
         firstLineInformation.getChildren().addAll(nameField, tableNumberField, numberOfPersonField, phoneNumberField);
@@ -114,5 +127,17 @@ public class menu extends Application {
         //Set spacing
         ((HBox) accessBox).setSpacing(30);
         ((HBox) firstLineInformation).setSpacing(5);
+
+
+    }
+
+
+    private void addClient(javafx.event.ActionEvent actionEvent)
+    {
+        int newTableNumber = Integer.parseInt(tableNumberField.getText());
+        int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
+        int newPhoneNumber = Integer.parseInt(phoneNumberField.getText());
+        Client newClient = new Client(newTableNumber,newNumberOfPerson,nameField.getText(),0,0,newPhoneNumber,commentField.getText());
+        System.out.println("aa");
     }
 }
