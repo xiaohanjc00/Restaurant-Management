@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,6 +21,7 @@ public class menu extends Application {
         makeHorizontalPane(root);
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("edit.css");
         primaryStage.setTitle("Restaurant Management");
         primaryStage.setScene(scene);
         primaryStage.setMinWidth(800);
@@ -61,14 +64,34 @@ public class menu extends Application {
     public void makeHorizontalPane(Pane parent)
     {
         Pane accessBox = new HBox();
+        accessBox.setPadding(new Insets(20));
         parent.getChildren().add(accessBox);
 
         TextField nameField = new TextField();
-        TextField tableNumberField = new TextField();
-        TextField numberOfPersonField = new TextField();
-        TextField phoneNumberField = new TextField();
+        nameField.setPromptText("Name");
+        //nameField.setPadding(new Insets(20));
+        //nameField.setBorder(new Border(20));
+        nameField.setAlignment(Pos.CENTER);
 
-        accessBox.getChildren().addAll(nameField, tableNumberField, numberOfPersonField, phoneNumberField);
-        ((HBox) accessBox).setSpacing(10);
+        TextField tableNumberField = new TextField();
+        tableNumberField.setPromptText("Table Number");
+        tableNumberField.setPrefWidth(100);
+        tableNumberField.setAlignment(Pos.CENTER);
+
+        TextField numberOfPersonField = new TextField();
+        numberOfPersonField.setPromptText("Nº of Person");
+        numberOfPersonField.setPrefWidth(100);
+        numberOfPersonField.setAlignment(Pos.CENTER);
+
+        TextField phoneNumberField = new TextField();
+        phoneNumberField.setPromptText("Phone Number");
+        phoneNumberField.setAlignment(Pos.CENTER);
+
+        Button addButton = new Button("Add");
+        addButton.setPrefWidth(100);
+        addButton.setPrefHeight(50);
+
+        accessBox.getChildren().addAll(nameField, tableNumberField, numberOfPersonField, phoneNumberField, addButton);
+        ((HBox) accessBox).setSpacing(30);
     }
 }
