@@ -20,6 +20,7 @@ public class menu extends Application {
         Scene scene = new Scene(root);
         primaryStage.setTitle("Restaurant Management");
         primaryStage.setScene(scene);
+        primaryStage.setMinWidth(800);
         primaryStage.show();
     }
 
@@ -39,6 +40,7 @@ public class menu extends Application {
     {
         TableView<Client> table1 = new TableView();
         parent.getChildren().add(table1);
+        table1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         TableColumn<Client,String> column1 = new TableColumn<>("name");
         column1.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
