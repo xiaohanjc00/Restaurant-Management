@@ -107,5 +107,6 @@ public class menu extends Application {
         informationBox.getChildren().addAll(firstLineInformation, commentField);
         accessBox.getChildren().addAll(informationBox, addButton);
         ((HBox) accessBox).setSpacing(30);
+        ((HBox) firstLineInformation).setSpacing(5);
     }
 }
