@@ -52,19 +52,22 @@ public class menu extends Application {
         TableColumn<Client, Integer> column2 = new TableColumn<>("Table Number");
         column2.setCellValueFactory(new PropertyValueFactory<Client, Integer>("tableNumber"));
 
-        TableColumn<Client, Integer> column3 = new TableColumn<>("Number of Person");
-        column3.setCellValueFactory(new PropertyValueFactory<Client, Integer>("nnumberOfPerson"));
+        TableColumn<Client, Integer> column3 = new TableColumn<>("Nº of Person");
+        column3.setCellValueFactory(new PropertyValueFactory<Client, Integer>("numberOfPerson"));
 
         TableColumn<Client, Integer> column4 = new TableColumn<>("Phone Number");
         column4.setCellValueFactory(new PropertyValueFactory<Client, Integer>("phoneNumber"));
 
-        table1.getColumns().addAll(column1, column2, column3, column4);
+        TableColumn<Client, Integer> column5 = new TableColumn<>("Comment");
+        column4.setCellValueFactory(new PropertyValueFactory<Client, Integer>("comment"));
+
+        table1.getColumns().addAll(column1, column2, column3, column4, column5);
     }
 
     public void makeHorizontalPane(Pane parent)
     {
         Pane accessBox = new HBox();
-        accessBox.setPadding(new Insets(10));
+        accessBox.setPadding(new Insets(10,20,20,50));
 
 
         Pane informationBox = new VBox();
@@ -103,9 +106,12 @@ public class menu extends Application {
         addButton.setPrefWidth(100);
         addButton.setPrefHeight(60);
 
+        //add all components to its pane
         firstLineInformation.getChildren().addAll(nameField, tableNumberField, numberOfPersonField, phoneNumberField);
         informationBox.getChildren().addAll(firstLineInformation, commentField);
         accessBox.getChildren().addAll(informationBox, addButton);
+
+        //Set spacing
         ((HBox) accessBox).setSpacing(30);
         ((HBox) firstLineInformation).setSpacing(5);
     }
