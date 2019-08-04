@@ -16,6 +16,7 @@ public class menu extends Application {
         Pane root = new VBox();
         menuBar(root);
         tableView1(root);
+        makeHorizontalPane(root);
 
         Scene scene = new Scene(root);
         primaryStage.setTitle("Restaurant Management");
@@ -55,5 +56,19 @@ public class menu extends Application {
         column4.setCellValueFactory(new PropertyValueFactory<Client, Integer>("phoneNumber"));
 
         table1.getColumns().addAll(column1, column2, column3, column4);
+    }
+
+    public void makeHorizontalPane(Pane parent)
+    {
+        Pane accessBox = new HBox();
+        parent.getChildren().add(accessBox);
+
+        TextField nameField = new TextField();
+        TextField tableNumberField = new TextField();
+        TextField numberOfPersonField = new TextField();
+        TextField phoneNumberField = new TextField();
+
+        accessBox.getChildren().addAll(nameField, tableNumberField, numberOfPersonField, phoneNumberField);
+        ((HBox) accessBox).setSpacing(10);
     }
 }
