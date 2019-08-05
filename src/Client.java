@@ -1,18 +1,15 @@
-/**
- * Write a description of class client here.
- *
- * @Xiaohan Jiang Chen
- * @version 1.0 (24-07-19)
- */
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.StringProperty;
+
 public class Client
 {
     private int tableNumber;
     private int numberOfPerson;
-    private String name = null;
+    private String name;
     private int hour;
     private int minute;
     private int phoneNumber;
-    private String comment = null;
+    private String comment;
     private Time time;
     private Table table;
     private Tables tables;
@@ -26,17 +23,9 @@ public class Client
         this.phoneNumber = phoneNumber;
         this.comment = comment;
         table=null;
-        //time.parseProcess(hour, minute);
-        //addTable(tableNumber);
-        
     }
-    
-    //public void addTable(int newTableNumber)
-    //{
-    //    tableNumber = newTableNumber;
-    //    table = tables.searchTable(newTableNumber);
-    //}
 
+    //name
     public String getName() {
         return name;
     }
@@ -45,6 +34,7 @@ public class Client
         this.name = name;
     }
 
+    //tableNumber
     public int getTableNumber() {
             return tableNumber;
         }
@@ -53,6 +43,7 @@ public class Client
         this.tableNumber = tableNumber;
     }
 
+    //numberOfPerson
     public int getNumberOfPerson() {
             return numberOfPerson;
         }
@@ -61,6 +52,7 @@ public class Client
             this.numberOfPerson = numberOfPerson;
         }
 
+     //phoneNumber
      public int getPhoneNumber() {
                 return phoneNumber;
             }
@@ -69,6 +61,7 @@ public class Client
             this.phoneNumber = phoneNumber;
         }
 
+     //comment
      public String getComment() {
                     return comment;
                 }
@@ -79,22 +72,6 @@ public class Client
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-    public void addClientToTable()
-    {
-        
-    }
-    
     /**
      *Add a new name for the client
      * @param  newName of the client

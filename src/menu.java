@@ -27,13 +27,14 @@ public class menu extends Application {
     TextField commentField = new TextField();
     ClientList clientList;
     TableView<Client> table1;
-    private ObservableList<Client> observableClients;
+
     @Override
     public void start(Stage primaryStage) {
         Pane root = new VBox();
         menuBar(root);
         tableView1(root);
         makeHorizontalPane(root);
+        clientList = new ClientList();
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add("edit.css");
@@ -86,7 +87,6 @@ public class menu extends Application {
 
 
         Pane informationBox = new VBox();
-        //informationBox.setPadding(new Insets(15));
 
         Pane firstLineInformation = new HBox();
         firstLineInformation.setPadding(new Insets(5));
@@ -95,8 +95,6 @@ public class menu extends Application {
 
 
         nameField.setPromptText("Name");
-        //nameField.setPadding(new Insets(20));
-        //nameField.setBorder(new Border(20));
         nameField.setAlignment(Pos.CENTER);
 
 
@@ -141,14 +139,9 @@ public class menu extends Application {
         int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
         int newPhoneNumber = Integer.parseInt(phoneNumberField.getText());
         Client newClient = new Client(newTableNumber,newNumberOfPerson,nameField.getText(),newPhoneNumber,commentField.getText());
-        //observableClients.add(newClient);
-        //table1.setItems(getClientData());
+        clientList.addClientToList(newClient);
         table1.getItems().add(newClient);
         table1.refresh();
     }
 
-    public ObservableList<Client> getClientData()
-    {
-        return observableClients;
-    }
 }
