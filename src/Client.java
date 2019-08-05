@@ -1,73 +1,74 @@
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Client
 {
-    private int tableNumber;
-    private int numberOfPerson;
-    private String name;
+    private SimpleIntegerProperty tableNumber;
+    private SimpleIntegerProperty numberOfPerson;
+    private SimpleStringProperty name;
     private int hour;
     private int minute;
-    private int phoneNumber;
-    private String comment;
+    private SimpleIntegerProperty phoneNumber;
+    private SimpleStringProperty comment;
     private Time time;
     private Table table;
     private Tables tables;
     public Client(int tableNumber, int numberOfPerson, String name, int phoneNumber, String comment)
     {
-        this.tableNumber = tableNumber;
-        this.numberOfPerson = numberOfPerson;
-        this.name = name;
+        this.tableNumber = new SimpleIntegerProperty(tableNumber);
+        this.numberOfPerson = new SimpleIntegerProperty(numberOfPerson);
+        this.name = new SimpleStringProperty(name);
         this.hour = hour;
         this.minute = minute;
-        this.phoneNumber = phoneNumber;
-        this.comment = comment;
+        this.phoneNumber = new SimpleIntegerProperty(phoneNumber);
+        this.comment = new SimpleStringProperty(comment);
         table=null;
     }
 
     //name
     public String getName() {
-        return name;
+        return name.get();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String newName) {
+        name.set(newName);
     }
 
     //tableNumber
     public int getTableNumber() {
-            return tableNumber;
+            return tableNumber.get();
         }
 
-    public void setTableNumber(int tableNumber) {
-        this.tableNumber = tableNumber;
+    public void setTableNumber(int newTableNumber) {
+        tableNumber.set(newTableNumber);
     }
 
     //numberOfPerson
     public int getNumberOfPerson() {
-            return numberOfPerson;
+            return numberOfPerson.get();
         }
 
-    public void setNumberOfPerson(int numberOfPerson){
-            this.numberOfPerson = numberOfPerson;
+    public void setNumberOfPerson(int newNumberOfPerson){
+            numberOfPerson.set(newNumberOfPerson);
         }
 
      //phoneNumber
      public int getPhoneNumber() {
-                return phoneNumber;
+                return phoneNumber.get();
             }
 
-     public void setPhoneNumber(int phoneNumber){
-            this.phoneNumber = phoneNumber;
+     public void setPhoneNumber(int newPhoneNumber){
+            phoneNumber.set(newPhoneNumber);
         }
 
      //comment
      public String getComment() {
-                    return comment;
+                    return comment.get();
                 }
 
-     public void setComment(String comment){
-            this.comment = comment;
+     public void setComment(String newComment){
+            comment.set(newComment);
         }
 
 
@@ -75,7 +76,7 @@ public class Client
     /**
      *Add a new name for the client
      * @param  newName of the client
-     */
+
     public void addName(String newName)
     {
         name = newName;
@@ -119,4 +120,5 @@ public class Client
     {
         return tableNumber;
     }
+    */
 }

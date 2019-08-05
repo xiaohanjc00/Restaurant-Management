@@ -5,18 +5,21 @@ import javafx.collections.ObservableList;
 import java.util.*;
 
 public class ClientList{
-    private ObservableList<Client> clientList;
+    private static ArrayList<Client> arrayClient;
 
-    public ClientList() {clientList = FXCollections.observableArrayList();
+    public ClientList() {
+        arrayClient = new ArrayList<>();
+
     }
 
         public void addClientToList(Client client){
-            clientList.add(client);
+            arrayClient.add(client);
             System.out.println("1");
         }
 
         public List<Client> showClientList(){
-            return clientList;
+            return arrayClient;
         }
+
 
 }
