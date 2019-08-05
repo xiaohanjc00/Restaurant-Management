@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,8 +11,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import javax.print.DocFlavor;
-import java.awt.event.ActionEvent;
 import java.sql.Driver;
+import java.util.List;
 
 public class menu extends Application {
 
@@ -24,7 +25,9 @@ public class menu extends Application {
     TextField numberOfPersonField = new TextField();
     TextField phoneNumberField = new TextField();
     TextField commentField = new TextField();
-
+    ClientList clientList;
+    TableView<Client> table1;
+    private ObservableList<Client> observableClients;
     @Override
     public void start(Stage primaryStage) {
         Pane root = new VBox();
@@ -54,26 +57,26 @@ public class menu extends Application {
 
     public void tableView1(Pane parent)
     {
-        TableView<Client> table1 = new TableView();
+        table1 = new TableView();
         parent.getChildren().add(table1);
         table1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        TableColumn<Client,String> column1 = new TableColumn<>("name");
-        column1.setCellValueFactory(new PropertyValueFactory<Client, String>("name"));
+        TableColumn<Client, String> column1 = new TableColumn<>("name");
+        column1.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         TableColumn<Client, Integer> column2 = new TableColumn<>("Table Number");
-        column2.setCellValueFactory(new PropertyValueFactory<Client, Integer>("tableNumber"));
+        column2.setCellValueFactory(new PropertyValueFactory<>("tableNumber"));
 
         TableColumn<Client, Integer> column3 = new TableColumn<>("Nº of Person");
-        column3.setCellValueFactory(new PropertyValueFactory<Client, Integer>("numberOfPerson"));
+        column3.setCellValueFactory(new PropertyValueFactory<>("numberOfPerson"));
 
         TableColumn<Client, Integer> column4 = new TableColumn<>("Phone Number");
-        column4.setCellValueFactory(new PropertyValueFactory<Client, Integer>("phoneNumber"));
+        column4.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
 
-        TableColumn<Client, Integer> column5 = new TableColumn<>("Comment");
-        column4.setCellValueFactory(new PropertyValueFactory<Client, Integer>("comment"));
+        TableColumn<Client, String> column5 = new TableColumn<>("Comment");
+        column5.setCellValueFactory(new PropertyValueFactory<>("comment"));
 
-        table1.getColumns().addAll(column1, column2, column3, column4, column5);
+        table1.getColumns().addAll(column1,column2,column3,column4,column5);
     }
 
     public void makeHorizontalPane(Pane parent)
@@ -132,12 +135,20 @@ public class menu extends Application {
     }
 
 
-    private void addClient(javafx.event.ActionEvent actionEvent)
+    private void addClient(ActionEvent actionEvent)
     {
         int newTableNumber = Integer.parseInt(tableNumberField.getText());
         int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
         int newPhoneNumber = Integer.parseInt(phoneNumberField.getText());
-        Client newClient = new Client(newTableNumber,newNumberOfPerson,nameField.getText(),0,0,newPhoneNumber,commentField.getText());
-        System.out.println("aa");
+        Client newClient = new Client(newTableNumber,newNumberOfPerson,nameField.getText(),newPhoneNumber,commentField.getText());
+        //observableClients.add(newClient);
+        //table1.setItems(getClientData());
+        table1.getItems().add(newClient);
+        table1.refresh();
+    }
+
+    public ObservableList<Client> getClientData()
+    {
+        return observableClients;
     }
 }

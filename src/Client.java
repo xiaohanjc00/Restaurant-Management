@@ -1,4 +1,3 @@
-
 /**
  * Write a description of class client here.
  *
@@ -9,15 +8,15 @@ public class Client
 {
     private int tableNumber;
     private int numberOfPerson;
-    private String name;
+    private String name = null;
     private int hour;
     private int minute;
     private int phoneNumber;
-    private String comment;
+    private String comment = null;
     private Time time;
     private Table table;
     private Tables tables;
-    public Client(int tableNumber, int numberOfPerson, String name, int hour, int minute, int phoneNumber, String comment)
+    public Client(int tableNumber, int numberOfPerson, String name, int phoneNumber, String comment)
     {
         this.tableNumber = tableNumber;
         this.numberOfPerson = numberOfPerson;
@@ -37,7 +36,60 @@ public class Client
     //    tableNumber = newTableNumber;
     //    table = tables.searchTable(newTableNumber);
     //}
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getTableNumber() {
+            return tableNumber;
+        }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
+    }
+
+    public int getNumberOfPerson() {
+            return numberOfPerson;
+        }
+
+    public void setNumberOfPerson(int numberOfPerson){
+            this.numberOfPerson = numberOfPerson;
+        }
+
+     public int getPhoneNumber() {
+                return phoneNumber;
+            }
+
+     public void setPhoneNumber(int phoneNumber){
+            this.phoneNumber = phoneNumber;
+        }
+
+     public String getComment() {
+                    return comment;
+                }
+
+     public void setComment(String comment){
+            this.comment = comment;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void addClientToTable()
     {
         

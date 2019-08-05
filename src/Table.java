@@ -22,7 +22,7 @@ public class Table
     
     public void addNewClient(int tableNumber, int numberOfPerson, String name, int hour, int minute, int phoneNumber, String comment)
     {
-        Client client = new Client(tableNumber,numberOfPerson,name,hour,minute,phoneNumber,comment);
+        Client client = new Client(tableNumber,numberOfPerson,name,phoneNumber,comment);
         clients.add(client);
     }
     
