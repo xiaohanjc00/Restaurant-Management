@@ -135,13 +135,24 @@ public class menu extends Application {
 
     private void addClient(ActionEvent actionEvent)
     {
-        int newTableNumber = Integer.parseInt(tableNumberField.getText());
-        int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
-        int newPhoneNumber = Integer.parseInt(phoneNumberField.getText());
-        Client newClient = new Client(newTableNumber,newNumberOfPerson,nameField.getText(),newPhoneNumber,commentField.getText());
-        clientList.addClientToList(newClient);
-        table1.getItems().add(newClient);
-        table1.refresh();
+        try {
+            int newTableNumber = Integer.parseInt(tableNumberField.getText());
+            int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
+            int newPhoneNumber = Integer.parseInt(phoneNumberField.getText());
+            Client newClient = new Client(newTableNumber,newNumberOfPerson,nameField.getText(),newPhoneNumber,commentField.getText());
+            clientList.addClientToList(newClient);
+            table1.getItems().add(newClient);
+            table1.refresh();
+        }
+        catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("WARNING");
+            alert.setHeaderText(null);
+            alert.setContentText("Please enter valid values");
+
+            alert.showAndWait();
+        }
+
     }
 
 }
