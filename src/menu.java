@@ -134,15 +134,23 @@ public class menu extends Application {
 
 
     private void addClient(ActionEvent actionEvent)
-    {
+    {   //"\""
         try {
+            String newName = (nameField.getText());
+            String newComment = (commentField.getText());
             int newTableNumber = Integer.parseInt(tableNumberField.getText());
             int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
             int newPhoneNumber = Integer.parseInt(phoneNumberField.getText());
-            Client newClient = new Client(newTableNumber,newNumberOfPerson,nameField.getText(),newPhoneNumber,commentField.getText());
+            Client newClient = new Client(newTableNumber,newNumberOfPerson,newName,newPhoneNumber,newComment);
             clientList.addClientToList(newClient);
             table1.getItems().add(newClient);
             table1.refresh();
+
+            tableNumberField.clear();
+            numberOfPersonField.clear();
+            nameField.clear();
+            phoneNumberField.clear();
+            commentField.clear();
         }
         catch (Exception e){
             Alert alert = new Alert(Alert.AlertType.WARNING);
