@@ -28,7 +28,15 @@ public class menu extends Application {
     TableView<Client> table1 = new TableView<>();
     private static ObservableList<Client> observableClientList;
     String informationName;
+    int informationTableNumber;
+    int informationNumberOfPerson;
+    int informationPhoneNumber;
+    String informationComment;
     Label clientName;
+    Label clientNumberOfPerson;
+    Label clientTableNumber;
+    Label clientPhoneNumber;
+    Label clientComment;
 
     @Override
     public void start(Stage primaryStage) {
@@ -62,10 +70,40 @@ public class menu extends Application {
 
         Label informationTitle = new Label("INFORMATION");
         informationTitle.setFont(new Font("Potra", 20));
+
+        Pane nameLine = new HBox();
+        Label fixedName = new Label("Name:");
         clientName = new Label(informationName);
+        nameLine.getChildren().addAll(fixedName, clientName);
+        ((HBox) nameLine).setSpacing(20);
+
+        Pane numberOfPersonLine = new HBox();
+        Label fixedNumberOfPerson = new Label("Number of Person:");
+        clientNumberOfPerson = new Label(informationNumberOfPerson + " ");
+        numberOfPersonLine.getChildren().addAll(fixedNumberOfPerson, clientNumberOfPerson);
+        ((HBox) numberOfPersonLine).setSpacing(20);
+
+        Pane tableNumberLine = new HBox();
+        Label fixedTableNumber = new Label("Table Number:");
+        clientTableNumber = new Label(informationTableNumber + " ");
+        tableNumberLine.getChildren().addAll(fixedTableNumber, clientTableNumber);
+        ((HBox) tableNumberLine).setSpacing(20);
+
+        Pane phoneNumberLine = new HBox();
+        Label fixedPhoneNumber = new Label("Phone Number:");
+        clientPhoneNumber = new Label(informationPhoneNumber + " ");
+        phoneNumberLine.getChildren().addAll(fixedPhoneNumber, clientPhoneNumber);
+        ((HBox) phoneNumberLine).setSpacing(20);
+
+        Pane commentLine = new HBox();
+        Label fixedComment = new Label("Comment:");
+        clientComment = new Label(informationComment);
+        commentLine.getChildren().addAll(fixedComment, clientComment);
+        ((HBox) commentLine).setSpacing(20);
+
         ((VBox) mainInformationBox).setSpacing(50);
 
-        mainInformationBox.getChildren().addAll(informationTitle, clientName);
+        mainInformationBox.getChildren().addAll(informationTitle, nameLine, tableNumberLine, numberOfPersonLine, phoneNumberLine, commentLine);
         mainInformationBox.setPadding(new Insets(20,0,0,20));
     }
 
@@ -117,9 +155,27 @@ public class menu extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent mouseEvent) {
                 if(mouseEvent.getClickCount() == 1){
-                    if(table1.getSelectionModel().isEmpty()) { informationName = null;}
-                    else {informationName = table1.getSelectionModel().getSelectedItem().getName();}
+                    if(table1.getSelectionModel().isEmpty()) {
+                        informationName = null;
+                        informationPhoneNumber = 0;
+                        informationTableNumber = 0;
+                        informationNumberOfPerson = 0;
+                        informationComment = null;
+
+                    }
+                    else {
+                        informationName = table1.getSelectionModel().getSelectedItem().getName();
+                        informationNumberOfPerson = table1.getSelectionModel().getSelectedItem().getNumberOfPerson();
+                        informationTableNumber = table1.getSelectionModel().getSelectedItem().getTableNumber();
+                        informationPhoneNumber = table1.getSelectionModel().getSelectedItem().getPhoneNumber();
+                        informationComment = table1.getSelectionModel().getSelectedItem().getComment();
+                    }
                     clientName.setText(informationName);
+                    clientNumberOfPerson.setText(informationNumberOfPerson + " ");
+                    clientTableNumber.setText(informationTableNumber + " ");
+                    clientPhoneNumber.setText(informationPhoneNumber + " ");
+                    clientComment.setText(informationComment);
+
                 }
             }
         });
