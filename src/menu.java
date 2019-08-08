@@ -7,10 +7,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 
 import javax.print.DocFlavor;
@@ -32,16 +35,22 @@ public class menu extends Application {
     TextField phoneNumberField = new TextField();
     TextField commentField = new TextField();
     ClientList clientList;
-    TableView<Client> table1;
+    TableView<Client> table1 = new TableView<>();
     private static ObservableList<Client> observableClientList;
+    String informationName;
+    Label clientName;
 
     @Override
     public void start(Stage primaryStage) {
         //Creation of the root pane
-        Pane root = new VBox();
-        menuBar(root);      //Add menuBar
-        tableView1(root);   //Add tableView
-        makeHorizontalPane(root);   //Add fieldsPane
+        Pane root = new HBox();
+        Pane tablePanel = new VBox();
+        Pane informationPanel = new VBox();
+        root.getChildren().addAll(tablePanel, informationPanel);
+        menuBar(tablePanel);      //Add menuBar
+        tableView1(tablePanel);   //Add tableView
+        makeHorizontalPane(tablePanel);   //Add fieldsPane
+        createInformationPanel(informationPanel);  //Add information Panel
 
         //Creation of ClientList and observableClientList
         clientList = new ClientList();
@@ -56,6 +65,30 @@ public class menu extends Application {
         primaryStage.show();
     }
 
+    /**
+    public void informationPanelCreator(Pane parent){
+        TextField Title = new TextField("Title");
+
+        HBox line1 = new HBox();
+        TextField nameText = new TextField("Name: ");
+        TextField clientNameText = new TextField()
+
+    } */
+
+    public void createInformationPanel(Pane parent){
+
+        Pane mainInformationBox = new VBox();
+        parent.getChildren().add(mainInformationBox);
+
+        Label informationTitle = new Label("INFORMATION");
+        clientName = new Label(informationName);
+
+        mainInformationBox.getChildren().addAll(informationTitle, clientName);
+
+    }
+
+
+
     public void menuBar(Pane parent)
     {
         //Creation of the menubar
@@ -66,17 +99,19 @@ public class menu extends Application {
         Menu toolsMenu = new Menu("Tools");
         Menu helpMenu = new Menu("Help");
         Menu aboutMenu = new Menu("About");
+        Menu deleteMenu = new Menu("Delete");
+        Menu editMenu = new Menu("Edit");
 
-        menubar.getMenus().addAll(toolsMenu,helpMenu,aboutMenu);
+        menubar.getMenus().addAll(toolsMenu,helpMenu,aboutMenu, deleteMenu, editMenu);
     }
 
 
     public void tableView1(Pane parent)
     {
         //Creation of the tableView
-        table1 = new TableView<>();
         parent.getChildren().add(table1);   //add to parent
         table1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
 
         //Name column
         TableColumn<Client, String> column1 = new TableColumn<>("name");
@@ -94,8 +129,46 @@ public class menu extends Application {
         TableColumn<Client, String> column5 = new TableColumn<>("Comment");
         column5.setCellValueFactory(new PropertyValueFactory<>("comment"));
 
+
         table1.getColumns().addAll(column2,column3,column1,column4,column5);
+
+
+        table1.setOnMousePressed(new EventHandler<javafx.scene.input.MouseEvent>() {
+            @Override
+            public void handle(javafx.scene.input.MouseEvent mouseEvent) {
+                if(mouseEvent.getClickCount() == 1){
+                    if(table1.getSelectionModel().isEmpty()) { informationName = null;}
+                    else {informationName = table1.getSelectionModel().getSelectedItem().getName();}
+                    clientName.setText(informationName);
+                }
+            }
+
+
+        });
+
+
     }
+
+    public void clickedItem(MouseEvent event){
+        if(event.getClickCount() == 2){
+            System.out.println("aaaaaaaaaaaa");
+        }
+    }
+
+    /**
+    public Client getRowItem(){
+        table1.setRowFactory(tv -> {
+            TableRow<Client> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if(! row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
+                    Client clickedRowClient = row.getItem();
+                }
+            });
+        return row;
+        });
+
+    }
+     */
 
     public void makeHorizontalPane(Pane parent)
     {
@@ -181,5 +254,6 @@ public class menu extends Application {
         }
 
     }
+
 
 }
