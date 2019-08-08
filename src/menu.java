@@ -7,21 +7,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 
-
-import javax.print.DocFlavor;
-import javax.script.Bindings;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.sql.Driver;
-import java.util.List;
 
 public class menu extends Application {
 
@@ -61,19 +51,9 @@ public class menu extends Application {
         scene.getStylesheets().add("edit.css");
         primaryStage.setTitle("Restaurant Management");
         primaryStage.setScene(scene);
-        primaryStage.setMinWidth(800);
+        primaryStage.setMinWidth(1000);
         primaryStage.show();
     }
-
-    /**
-    public void informationPanelCreator(Pane parent){
-        TextField Title = new TextField("Title");
-
-        HBox line1 = new HBox();
-        TextField nameText = new TextField("Name: ");
-        TextField clientNameText = new TextField()
-
-    } */
 
     public void createInformationPanel(Pane parent){
 
@@ -81,12 +61,13 @@ public class menu extends Application {
         parent.getChildren().add(mainInformationBox);
 
         Label informationTitle = new Label("INFORMATION");
+        informationTitle.setFont(new Font("Potra", 20));
         clientName = new Label(informationName);
+        ((VBox) mainInformationBox).setSpacing(50);
 
         mainInformationBox.getChildren().addAll(informationTitle, clientName);
-
+        mainInformationBox.setPadding(new Insets(20,0,0,20));
     }
-
 
 
     public void menuBar(Pane parent)
@@ -111,7 +92,6 @@ public class menu extends Application {
         //Creation of the tableView
         parent.getChildren().add(table1);   //add to parent
         table1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
 
         //Name column
         TableColumn<Client, String> column1 = new TableColumn<>("name");
@@ -142,33 +122,8 @@ public class menu extends Application {
                     clientName.setText(informationName);
                 }
             }
-
-
         });
-
-
     }
-
-    public void clickedItem(MouseEvent event){
-        if(event.getClickCount() == 2){
-            System.out.println("aaaaaaaaaaaa");
-        }
-    }
-
-    /**
-    public Client getRowItem(){
-        table1.setRowFactory(tv -> {
-            TableRow<Client> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if(! row.isEmpty() && event.getButton()==MouseButton.PRIMARY) {
-                    Client clickedRowClient = row.getItem();
-                }
-            });
-        return row;
-        });
-
-    }
-     */
 
     public void makeHorizontalPane(Pane parent)
     {
@@ -218,8 +173,6 @@ public class menu extends Application {
         //Set spacing
         ((HBox) mainBox).setSpacing(30);
         ((HBox) firstLineInformation).setSpacing(5);
-
-
     }
 
 
@@ -254,6 +207,5 @@ public class menu extends Application {
         }
 
     }
-
 
 }
