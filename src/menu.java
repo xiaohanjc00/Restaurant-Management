@@ -101,9 +101,22 @@ public class menu extends Application {
         commentLine.getChildren().addAll(fixedComment, clientComment);
         ((HBox) commentLine).setSpacing(20);
 
-        ((VBox) mainInformationBox).setSpacing(50);
+        Pane editButtons = new HBox();
 
-        mainInformationBox.getChildren().addAll(informationTitle, nameLine, tableNumberLine, numberOfPersonLine, phoneNumberLine, commentLine);
+        Button deleteButton = new Button("Delete");
+        deleteButton.setPrefWidth(70);
+        deleteButton.setPrefHeight(20);
+
+        Button editButton = new Button("Edit");
+        editButton.setPrefWidth(70);
+        editButton.setPrefHeight(20);
+
+        editButtons.getChildren().addAll(deleteButton, editButton);
+        ((HBox) editButtons).setSpacing(20);
+
+        ((VBox) mainInformationBox).setSpacing(30);
+
+        mainInformationBox.getChildren().addAll(informationTitle, nameLine, tableNumberLine, numberOfPersonLine, phoneNumberLine, commentLine, editButtons);
         mainInformationBox.setPadding(new Insets(20,0,0,20));
     }
 
@@ -174,7 +187,7 @@ public class menu extends Application {
                     clientNumberOfPerson.setText(informationNumberOfPerson + " ");
                     clientTableNumber.setText(informationTableNumber + " ");
                     clientPhoneNumber.setText(informationPhoneNumber + " ");
-                    clientComment.setText(informationComment);
+                    clientComment.setText(informationComment );
 
                 }
             }
