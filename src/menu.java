@@ -106,6 +106,7 @@ public class menu extends Application {
         Button deleteButton = new Button("Delete");
         deleteButton.setPrefWidth(70);
         deleteButton.setPrefHeight(20);
+        deleteButton.setOnAction(this::deleteClient);
 
         Button editButton = new Button("Edit");
         editButton.setPrefWidth(70);
@@ -275,6 +276,29 @@ public class menu extends Application {
             alert.showAndWait();
         }
 
+    }
+    private void deleteClient(ActionEvent event){
+        try{
+            observableClientList.remove(table1.getSelectionModel().getSelectedItem());
+            table1.refresh();
+            informationName = null;
+            informationComment = null;
+            informationNumberOfPerson = 0;
+            informationPhoneNumber = 0;
+            informationTableNumber = 0;
+
+            clientName.setText(informationName);
+            clientNumberOfPerson.setText(informationNumberOfPerson + " ");
+            clientTableNumber.setText(informationTableNumber + " ");
+            clientPhoneNumber.setText(informationPhoneNumber + " ");
+            clientComment.setText(informationComment );
+        }
+        catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("WARNING");
+            alert.setHeaderText(null);
+            alert.setContentText("Error");
+        }
     }
 
 }
