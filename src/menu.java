@@ -8,9 +8,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 
 public class menu extends Application {
@@ -108,11 +110,8 @@ public class menu extends Application {
         deleteButton.setPrefHeight(20);
         deleteButton.setOnAction(this::deleteClient);
 
-        Button editButton = new Button("Edit");
-        editButton.setPrefWidth(70);
-        editButton.setPrefHeight(20);
 
-        editButtons.getChildren().addAll(deleteButton, editButton);
+        editButtons.getChildren().addAll(deleteButton);
         ((HBox) editButtons).setSpacing(20);
 
         ((VBox) mainInformationBox).setSpacing(30);
@@ -132,10 +131,8 @@ public class menu extends Application {
         Menu toolsMenu = new Menu("Tools");
         Menu helpMenu = new Menu("Help");
         Menu aboutMenu = new Menu("About");
-        Menu deleteMenu = new Menu("Delete");
-        Menu editMenu = new Menu("Edit");
 
-        menubar.getMenus().addAll(toolsMenu,helpMenu,aboutMenu, deleteMenu, editMenu);
+        menubar.getMenus().addAll(toolsMenu,helpMenu,aboutMenu);
     }
 
 
@@ -145,21 +142,72 @@ public class menu extends Application {
         parent.getChildren().add(table1);   //add to parent
         table1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
+        table1.setEditable(true);
+
         //Name column
         TableColumn<Client, String> column1 = new TableColumn<>("name");
         column1.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        column1.setCellFactory(TextFieldTableCell.<Client>forTableColumn());
+        column1.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client,String> t) -> {
+                    ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
+                    ).setName(t.getNewValue());
+                    setLabels();
+                }
+        );
+
         //Table number column
         TableColumn<Client, Integer> column2 = new TableColumn<>("Table Number");
         column2.setCellValueFactory(new PropertyValueFactory<>("tableNumber"));
+
+        column2.setCellFactory(TextFieldTableCell.<Client, Integer>forTableColumn(new IntegerStringConverter()));
+        column2.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client,Integer> t) -> {
+                    ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
+                    ).setTableNumber(Integer.parseInt(String.valueOf(t.getNewValue())));
+                    setLabels();
+                }
+        );
+
         //Number of person column
         TableColumn<Client, Integer> column3 = new TableColumn<>("Nº of Person");
         column3.setCellValueFactory(new PropertyValueFactory<>("numberOfPerson"));
+
+        column3.setCellFactory(TextFieldTableCell.<Client, Integer>forTableColumn(new IntegerStringConverter()));
+        column3.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client,Integer> t) -> {
+                    ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
+                    ).setNumberOfPerson(Integer.parseInt(String.valueOf(t.getNewValue())));
+                    setLabels();
+                }
+        );
+
         //Phone number column
         TableColumn<Client, Integer> column4 = new TableColumn<>("Phone Number");
         column4.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+
+        column4.setCellFactory(TextFieldTableCell.<Client, Integer>forTableColumn(new IntegerStringConverter()));
+        column4.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client,Integer> t) -> {
+                    ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
+                    ).setPhoneNumber(Integer.parseInt(String.valueOf(t.getNewValue())));
+                    setLabels();
+                }
+        );
+
         //Comment column
         TableColumn<Client, String> column5 = new TableColumn<>("Comment");
         column5.setCellValueFactory(new PropertyValueFactory<>("comment"));
+
+        column5.setCellFactory(TextFieldTableCell.<Client>forTableColumn());
+        column5.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client,String> t) -> {
+                    ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
+                    ).setComment(t.getNewValue());
+                    setLabels();
+                }
+        );
 
 
         table1.getColumns().addAll(column2,column3,column1,column4,column5);
@@ -184,11 +232,7 @@ public class menu extends Application {
                         informationPhoneNumber = table1.getSelectionModel().getSelectedItem().getPhoneNumber();
                         informationComment = table1.getSelectionModel().getSelectedItem().getComment();
                     }
-                    clientName.setText(informationName);
-                    clientNumberOfPerson.setText(informationNumberOfPerson + " ");
-                    clientTableNumber.setText(informationTableNumber + " ");
-                    clientPhoneNumber.setText(informationPhoneNumber + " ");
-                    clientComment.setText(informationComment );
+                    setLabels();
 
                 }
             }
@@ -287,11 +331,7 @@ public class menu extends Application {
             informationPhoneNumber = 0;
             informationTableNumber = 0;
 
-            clientName.setText(informationName);
-            clientNumberOfPerson.setText(informationNumberOfPerson + " ");
-            clientTableNumber.setText(informationTableNumber + " ");
-            clientPhoneNumber.setText(informationPhoneNumber + " ");
-            clientComment.setText(informationComment );
+            setLabels();
         }
         catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -299,6 +339,15 @@ public class menu extends Application {
             alert.setHeaderText(null);
             alert.setContentText("Error");
         }
+    }
+
+    public void setLabels()
+    {
+        clientName.setText(informationName);
+        clientNumberOfPerson.setText(informationNumberOfPerson + " ");
+        clientTableNumber.setText(informationTableNumber + " ");
+        clientPhoneNumber.setText(informationPhoneNumber + " ");
+        clientComment.setText(informationComment );
     }
 
 }
