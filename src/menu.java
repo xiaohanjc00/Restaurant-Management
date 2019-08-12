@@ -44,6 +44,7 @@ public class menu extends Application {
     Label clientPhoneNumber;
     Label clientComment;
     File clientFile;
+    ClientDatabase database;
 
     @Override
     public void start(Stage primaryStage) {
@@ -59,6 +60,9 @@ public class menu extends Application {
         //Creation of ClientList and observableClientList
         clientList = new ClientList();
         observableClientList = FXCollections.observableList(clientList.showClientList());
+
+        database = new ClientDatabase();
+        database.createDatabase();
 
         //Creation of the scene
         Scene scene = new Scene(root);
@@ -302,7 +306,10 @@ public class menu extends Application {
             int newTableNumber = Integer.parseInt(tableNumberField.getText());
             int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
             int newPhoneNumber = Integer.parseInt(phoneNumberField.getText());
-            Client newClient = new Client(newTableNumber, newNumberOfPerson, newName, newPhoneNumber, newComment);
+            Client newClient = new Client(newName, newTableNumber, newNumberOfPerson, newPhoneNumber, newComment);
+            System.out.println(newClient.getName());
+            database.addClient(newClient);
+            database.printClients();
 
             //Add new client to the observableList and set tables to appear the values from the list
             observableClientList.add(newClient);
@@ -320,6 +327,7 @@ public class menu extends Application {
             alert.setTitle("WARNING");
             alert.setHeaderText(null);
             alert.setContentText("Please enter valid values");
+            e.printStackTrace();
 
             alert.showAndWait();
         }

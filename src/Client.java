@@ -14,7 +14,7 @@ public class Client
     private Time time;
     private Table table;
     private Tables tables;
-    public Client(int tableNumber, int numberOfPerson, String name, int phoneNumber, String comment)
+    public Client(String name, int tableNumber, int numberOfPerson, int phoneNumber, String comment)
     {
         this.tableNumber = new SimpleIntegerProperty(tableNumber);
         this.numberOfPerson = new SimpleIntegerProperty(numberOfPerson);
