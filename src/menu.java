@@ -9,10 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
+import org.h2.Driver;
+import java.io.File;
 
 
 public class menu extends Application {
@@ -39,6 +43,7 @@ public class menu extends Application {
     Label clientTableNumber;
     Label clientPhoneNumber;
     Label clientComment;
+    File clientFile;
 
     @Override
     public void start(Stage primaryStage) {
@@ -51,7 +56,6 @@ public class menu extends Application {
         tableView1(tablePanel);   //Add tableView
         makeHorizontalPane(tablePanel);   //Add fieldsPane
         createInformationPanel(informationPanel);  //Add information Panel
-
         //Creation of ClientList and observableClientList
         clientList = new ClientList();
         observableClientList = FXCollections.observableList(clientList.showClientList());
@@ -210,7 +214,7 @@ public class menu extends Application {
         );
 
 
-        table1.getColumns().addAll(column2,column3,column1,column4,column5);
+        table1.getColumns().addAll(column1,column2,column3,column4,column5);
 
 
         table1.setOnMousePressed(new EventHandler<javafx.scene.input.MouseEvent>() {
