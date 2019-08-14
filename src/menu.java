@@ -63,6 +63,9 @@ public class menu extends Application {
 
         database = new ClientDatabase();
         database.createDatabase();
+        database.startTable();
+        table1.setItems(observableClientList);
+        table1.refresh();
 
         //Creation of the scene
         Scene scene = new Scene(root);
@@ -71,6 +74,10 @@ public class menu extends Application {
         primaryStage.setScene(scene);
         primaryStage.setMinWidth(1000);
         primaryStage.show();
+    }
+
+    public static void addToObservableList(Client client){
+        observableClientList.add(client);
     }
 
     public void createInformationPanel(Pane parent){

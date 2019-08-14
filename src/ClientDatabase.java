@@ -4,7 +4,7 @@ import java.sql.*;
 public class ClientDatabase {
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:~/test3";
+    static final String DB_URL = "jdbc:h2:~/test4";
 
     //  Database credentials
     static final String USER = "sa";
@@ -19,6 +19,30 @@ public class ClientDatabase {
         createDatabase();
         test();
         printClients();
+    }
+
+    public static void startTable(){
+        try {
+            String sql = "select * from CLIENT";
+            stmt.executeQuery(sql);
+            System.out.println("Showing clients...");
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                // Retrieve by column name
+                String name = rs.getString("name");
+                int tableNumber = rs.getInt("tableNumber");
+                int numberOfPerson = rs.getInt("numberOfPerson");
+                int phoneNumber = rs.getInt("phoneNumber");
+                String comment = rs.getString("comment");
+
+                Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment);
+                menu.addToObservableList(newClient);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void createDatabase(){
@@ -41,8 +65,6 @@ public class ClientDatabase {
                     " phoneNumber INTEGER, " +
                     " comment VARCHAR(255)," +
                     " PRIMARY KEY ( phoneNumber,name ))";
-
-
             stmt.executeUpdate(sql);
             createSecondaryDatabase();
             System.out.println("Created primary table in given database...");
