@@ -1,9 +1,10 @@
+import javax.print.DocFlavor;
 import java.sql.*;
 
 public class ClientDatabase {
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:~/test40";
+    static final String DB_URL = "jdbc:h2:~/test3";
 
     //  Database credentials
     static final String USER = "sa";
@@ -29,6 +30,7 @@ public class ClientDatabase {
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
+
             //STEP 3: Execute a query
             System.out.println("Creating table in given database...");
             stmt = conn.createStatement();
@@ -39,8 +41,33 @@ public class ClientDatabase {
                     " phoneNumber INTEGER, " +
                     " comment VARCHAR(255)," +
                     " PRIMARY KEY ( phoneNumber,name ))";
+
+
             stmt.executeUpdate(sql);
-            System.out.println("Created table in given database...");
+            createSecondaryDatabase();
+            System.out.println("Created primary table in given database...");
+
+        } catch(SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch(Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        }
+    }
+
+    public static void createSecondaryDatabase(){
+        try {
+            String sql2 =  "CREATE TABLE DELETEDCLIENT " +
+                    "(name VARCHAR (255), " +
+                    " tableNumber INTEGER, " +
+                    " numberOfPerson INTEGER, " +
+                    " phoneNumber INTEGER, " +
+                    " comment VARCHAR(255)," +
+                    " PRIMARY KEY ( phoneNumber,name ))";
+
+            stmt.executeUpdate(sql2);
+            System.out.println("Created secondary table in given database...");
 
         } catch(SQLException se) {
             //Handle errors for JDBC
@@ -69,7 +96,7 @@ public class ClientDatabase {
 
             String sql = "select * from CLIENT";
             stmt.executeQuery(sql);
-            System.out.println("Processing...");
+            System.out.println("Showing clients...");
             ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
@@ -93,7 +120,36 @@ public class ClientDatabase {
         }
     }
 
-        public void addClient(Client newClient){
+    public static void printDeletedClients() {
+        try {
+
+            String sql = "select * from DELETEDCLIENT";
+            stmt.executeQuery(sql);
+            System.out.println("Showing deleted clients...");
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                // Retrieve by column name
+                String name = rs.getString("name");
+                int tableNumber = rs.getInt("tableNumber");
+                int numberOfPerson = rs.getInt("numberOfPerson");
+                int phoneNumber = rs.getInt("phoneNumber");
+                String comment = rs.getString("comment");
+
+                // Display values
+                System.out.print("name: " + name);
+                System.out.print(", tableNumber: " + tableNumber);
+                System.out.print(", numberOfPerson: " + numberOfPerson);
+                System.out.println(", phoneNumber: " + phoneNumber);
+                System.out.println(", comment: " + comment);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addClient(Client newClient){
         try{
             String sql2 = "INSERT INTO CLIENT VALUES (" + "'" +
                     newClient.getName() + "'" + "," +"'" +
@@ -108,6 +164,32 @@ public class ClientDatabase {
         catch(Exception e){
         }
     }
+
+    public void deleteClient(Client newClient){
+        try{
+            String sql = "INSERT INTO DELETEDCLIENT (name, tableNumber, numberOfPerson, phoneNumber, comment) " +
+                    "SELECT * " +
+                    "FROM CLIENT " +
+                    "WHERE (name = " + "'" + newClient.getName() + "'" + " AND " +
+                    "tableNumber = " + "'" + newClient.getTableNumber() + "'" + " AND " +
+                    "numberOfPerson = " + "'" + newClient.getNumberOfPerson() + "'" + " AND " +
+                    "phoneNumber = " + "'" + newClient.getPhoneNumber() + "'" + " AND " +
+                    "comment = " + "'" + newClient.getComment() + "' )" ;
+            String sql2 = "DELETE FROM CLIENT " +
+                    "WHERE (name = " + "'" + newClient.getName() + "'" + " AND " +
+                    "tableNumber = " + "'" + newClient.getTableNumber() + "'" + " AND " +
+                    "numberOfPerson = " + "'" + newClient.getNumberOfPerson() + "'" + " AND " +
+                    "phoneNumber = " + "'" + newClient.getPhoneNumber() + "'" + " AND " +
+                    "comment = " + "'" + newClient.getComment() + "' )" ;
+
+            stmt.executeUpdate(sql);
+            stmt.executeUpdate(sql2);
+            System.out.println("Deleted...");
+        }
+        catch(Exception e){
+        }
+    }
+
 
 
     public static void closeDatabase(){

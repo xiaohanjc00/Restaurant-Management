@@ -335,6 +335,11 @@ public class menu extends Application {
     }
     private void deleteClient(ActionEvent event){
         try{
+            Client deletedClient = table1.getSelectionModel().getSelectedItem();
+            database.deleteClient(deletedClient);
+            database.printClients();
+            database.printDeletedClients();
+
             observableClientList.remove(table1.getSelectionModel().getSelectedItem());
             table1.refresh();
             informationName = null;
