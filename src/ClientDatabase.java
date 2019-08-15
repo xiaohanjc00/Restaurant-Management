@@ -212,7 +212,68 @@ public class ClientDatabase {
         }
     }
 
+    public static void editName(String newName, int phoneNumber){
+        try{
+            String sql = "UPDATE CLIENT " +
+                    "SET name = " + "'" + newName + "'" +
+                    "WHERE phoneNumber = " + "'" + phoneNumber + "'";
+            stmt.executeUpdate(sql);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
+    public static void editTableNumber(int newTableNumber, int phoneNumber){
+        try{
+            String sql = "UPDATE CLIENT " +
+                    "SET tableNumber = " + "'" + newTableNumber + "'" +
+                    "WHERE phoneNumber = " + "'" + phoneNumber + "'";
+            stmt.executeUpdate(sql);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void editNumberOfPerson(int newNumberOfPerson, int phoneNumber){
+        try{
+            String sql = "UPDATE CLIENT " +
+                    "SET numberOfPerson = " + "'" + newNumberOfPerson + "'" +
+                    "WHERE phoneNumber = " + "'" + phoneNumber + "'";
+            stmt.executeUpdate(sql);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void editPhoneNumber(int newPhoneNumber, String name, int tableNumber, int numberOfPerson, String comment){
+        try{
+            String sql = "UPDATE CLIENT " +
+                    "SET phoneNumber = " + "'" + newPhoneNumber + "'" +
+                    "WHERE name = " + "'" + name + "'" + " AND " +
+                    "tableNumber = " + "'" + tableNumber + "'" + " AND " +
+                    "numberOfPerson = " + "'" +  numberOfPerson + "'" + " AND " +
+                    "comment = " + "'" + comment + "'";
+            stmt.executeUpdate(sql);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void editComment(String newComment, int phoneNumber){
+        try{
+            String sql = "UPDATE CLIENT " +
+                    "SET comment = " + "'" + newComment + "'" +
+                    "WHERE phoneNumber = " + "'" + phoneNumber + "'";
+            stmt.executeUpdate(sql);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     public static void closeDatabase(){
         try{

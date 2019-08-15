@@ -169,6 +169,8 @@ public class menu extends Application {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
                     ).setName(t.getNewValue());
                     setLabels();
+                    database.editName(t.getTableView().getItems().get(t.getTablePosition().getRow()).getName(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                    database.printClients();
                 }
         );
 
@@ -182,6 +184,8 @@ public class menu extends Application {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
                     ).setTableNumber(Integer.parseInt(String.valueOf(t.getNewValue())));
                     setLabels();
+                    database.editTableNumber(t.getTableView().getItems().get(t.getTablePosition().getRow()).getTableNumber(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                    database.printClients();
                 }
         );
 
@@ -195,6 +199,8 @@ public class menu extends Application {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
                     ).setNumberOfPerson(Integer.parseInt(String.valueOf(t.getNewValue())));
                     setLabels();
+                    database.editNumberOfPerson(t.getTableView().getItems().get(t.getTablePosition().getRow()).getNumberOfPerson(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                    database.printClients();
                 }
         );
 
@@ -208,6 +214,12 @@ public class menu extends Application {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
                     ).setPhoneNumber(Integer.parseInt(String.valueOf(t.getNewValue())));
                     setLabels();
+                    database.editPhoneNumber(t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber(),
+                            t.getTableView().getItems().get(t.getTablePosition().getRow()).getName(),
+                            t.getTableView().getItems().get(t.getTablePosition().getRow()).getTableNumber(),
+                            t.getTableView().getItems().get(t.getTablePosition().getRow()).getNumberOfPerson(),
+                            t.getTableView().getItems().get(t.getTablePosition().getRow()).getComment());
+                    database.printClients();
                 }
         );
 
@@ -221,6 +233,8 @@ public class menu extends Application {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
                     ).setComment(t.getNewValue());
                     setLabels();
+                    database.editComment(t.getTableView().getItems().get(t.getTablePosition().getRow()).getComment(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                    database.printClients();
                 }
         );
 
