@@ -28,7 +28,7 @@ public class DateController {
                 System.out.println(selectedDate);
                 System.out.println(getSelectedDate());
                 System.out.println(currentDate());
-                //menu.table1.;
+                menu.observableClientList.clear();
                 menu.database.startTable(getSelectedDate());
             }
         };

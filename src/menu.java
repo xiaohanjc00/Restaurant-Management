@@ -34,7 +34,7 @@ public class menu extends Application {
     TextField commentField = new TextField();
     ClientList clientList;
     static TableView<Client> table1 = new TableView<>();
-    private static ObservableList<Client> observableClientList;
+    static ObservableList<Client> observableClientList;
     String informationName;
     int informationTableNumber;
     int informationNumberOfPerson;

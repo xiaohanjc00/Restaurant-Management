@@ -106,7 +106,7 @@ public class ClientDatabase {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            String sql2 =  "CREATE TABLE   CLIENT" + menu.datePicker.currentDate() +
+            String sql2 =  "CREATE TABLE   CLIENT" + suffix +
                     " (name VARCHAR (255), " +
                     " tableNumber INTEGER, " +
                     " numberOfPerson INTEGER, " +
@@ -120,7 +120,7 @@ public class ClientDatabase {
                 ex.printStackTrace();
             }
             finally{
-                String sql3 = "select * from CLIENT";
+                String sql3 = "select * from CLIENT" + suffix;
                 try {
                     stmt.executeQuery(sql3);
 
