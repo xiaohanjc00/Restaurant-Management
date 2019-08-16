@@ -33,7 +33,7 @@ public class menu extends Application {
     TextField phoneNumberField = new TextField();
     TextField commentField = new TextField();
     ClientList clientList;
-    TableView<Client> table1 = new TableView<>();
+    static TableView<Client> table1 = new TableView<>();
     private static ObservableList<Client> observableClientList;
     String informationName;
     int informationTableNumber;
@@ -46,9 +46,9 @@ public class menu extends Application {
     Label clientPhoneNumber;
     Label clientComment;
     File clientFile;
-    ClientDatabase database;
+    static ClientDatabase database;
     LocalDate selectedDate;
-    DateController datePicker;
+    static DateController datePicker;
 
     @Override
     public void start(Stage primaryStage) {
@@ -66,9 +66,11 @@ public class menu extends Application {
         clientList = new ClientList();
         observableClientList = FXCollections.observableList(clientList.showClientList());
 
+        //datePicker = new DateController();
+
         database = new ClientDatabase();
         database.createDatabase();
-        database.startTable();
+        database.startTable(datePicker.currentDate());
         table1.setItems(observableClientList);
         table1.refresh();
 

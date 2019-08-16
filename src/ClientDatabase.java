@@ -15,15 +15,18 @@ public class ClientDatabase {
     static Connection conn = null;
     static Statement stmt = null;
 
+    private static DateController date;
+
     public static void main(String[] args) {
         createDatabase();
         test();
         printClients();
     }
 
+
     public static void startTable(){
         try {
-            String sql = "select * from CLIENT";
+            String sql = "select * from CLIENT" + menu.datePicker.currentDate();
             stmt.executeQuery(sql);
             System.out.println("Showing clients...");
             ResultSet rs = stmt.executeQuery(sql);
@@ -42,6 +45,104 @@ public class ClientDatabase {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            String sql2 =  "CREATE TABLE   CLIENT" + menu.datePicker.currentDate() +
+                    " (name VARCHAR (255), " +
+                    " tableNumber INTEGER, " +
+                    " numberOfPerson INTEGER, " +
+                    " phoneNumber INTEGER, " +
+                    " comment VARCHAR(255)," +
+                    " PRIMARY KEY ( phoneNumber,name ))";
+            try {
+                stmt.executeUpdate(sql2);
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            finally{
+                String sql3 = "select * from CLIENT";
+                try {
+                    stmt.executeQuery(sql3);
+
+                    System.out.println("Showing clients...");
+                    ResultSet rs = stmt.executeQuery(sql3);
+
+                    while (rs.next()) {
+                        // Retrieve by column name
+                        String name = rs.getString("name");
+                        int tableNumber = rs.getInt("tableNumber");
+                        int numberOfPerson = rs.getInt("numberOfPerson");
+                        int phoneNumber = rs.getInt("phoneNumber");
+                        String comment = rs.getString("comment");
+
+                        Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment);
+                        menu.addToObservableList(newClient);
+                    }
+                }
+                catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void startTable(String suffix){
+        try {
+            String sql = "select * from CLIENT" + suffix;
+            stmt.executeQuery(sql);
+            System.out.println("Showing clients...");
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                // Retrieve by column name
+                String name = rs.getString("name");
+                int tableNumber = rs.getInt("tableNumber");
+                int numberOfPerson = rs.getInt("numberOfPerson");
+                int phoneNumber = rs.getInt("phoneNumber");
+                String comment = rs.getString("comment");
+
+                Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment);
+                menu.addToObservableList(newClient);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            String sql2 =  "CREATE TABLE   CLIENT" + menu.datePicker.currentDate() +
+                    " (name VARCHAR (255), " +
+                    " tableNumber INTEGER, " +
+                    " numberOfPerson INTEGER, " +
+                    " phoneNumber INTEGER, " +
+                    " comment VARCHAR(255)," +
+                    " PRIMARY KEY ( phoneNumber,name ))";
+            try {
+                stmt.executeUpdate(sql2);
+            }
+            catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            finally{
+                String sql3 = "select * from CLIENT";
+                try {
+                    stmt.executeQuery(sql3);
+
+                    System.out.println("Showing clients...");
+                    ResultSet rs = stmt.executeQuery(sql3);
+
+                    while (rs.next()) {
+                        // Retrieve by column name
+                        String name = rs.getString("name");
+                        int tableNumber = rs.getInt("tableNumber");
+                        int numberOfPerson = rs.getInt("numberOfPerson");
+                        int phoneNumber = rs.getInt("phoneNumber");
+                        String comment = rs.getString("comment");
+
+                        Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment);
+                        menu.addToObservableList(newClient);
+                    }
+                }
+                catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
@@ -116,7 +217,7 @@ public class ClientDatabase {
     public static void printClients() {
         try {
 
-            String sql = "select * from CLIENT";
+            String sql = "select * from CLIENT" + menu.datePicker.currentDate();
             stmt.executeQuery(sql);
             System.out.println("Showing clients...");
             ResultSet rs = stmt.executeQuery(sql);
@@ -173,7 +274,7 @@ public class ClientDatabase {
 
     public void addClient(Client newClient){
         try{
-            String sql2 = "INSERT INTO CLIENT VALUES (" + "'" +
+            String sql2 = "INSERT INTO CLIENT" + menu.datePicker.currentDate() + " VALUES (" + "'" +
                     newClient.getName() + "'" + "," +"'" +
                     newClient.getTableNumber() + "'" + "," +"'" +
                     newClient.getNumberOfPerson() + "'" + "," +"'" +
