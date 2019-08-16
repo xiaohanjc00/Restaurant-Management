@@ -272,9 +272,9 @@ public class ClientDatabase {
         }
     }
 
-    public void addClient(Client newClient){
+    public void addClient(Client newClient, String suffix){
         try{
-            String sql2 = "INSERT INTO CLIENT" + menu.datePicker.currentDate() + " VALUES (" + "'" +
+            String sql2 = "INSERT INTO CLIENT" + suffix + " VALUES (" + "'" +
                     newClient.getName() + "'" + "," +"'" +
                     newClient.getTableNumber() + "'" + "," +"'" +
                     newClient.getNumberOfPerson() + "'" + "," +"'" +

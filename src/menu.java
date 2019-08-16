@@ -341,7 +341,7 @@ public class menu extends Application {
             int newPhoneNumber = Integer.parseInt(phoneNumberField.getText());
             Client newClient = new Client(newName, newTableNumber, newNumberOfPerson, newPhoneNumber, newComment);
             System.out.println(newClient.getName());
-            database.addClient(newClient);
+            database.addClient(newClient, datePicker.getSelectedDate());
             database.printClients();
 
             //Add new client to the observableList and set tables to appear the values from the list
