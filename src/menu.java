@@ -15,8 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.LocalDateStringConverter;
 import org.h2.Driver;
 import java.io.File;
+import java.time.LocalDate;
 
 
 public class menu extends Application {
@@ -45,6 +47,8 @@ public class menu extends Application {
     Label clientComment;
     File clientFile;
     ClientDatabase database;
+    LocalDate selectedDate;
+    DateController datePicker;
 
     @Override
     public void start(Stage primaryStage) {
@@ -54,6 +58,7 @@ public class menu extends Application {
         Pane informationPanel = new VBox();
         root.getChildren().addAll(tablePanel, informationPanel);
         menuBar(tablePanel);      //Add menuBar
+        createDatePicker(tablePanel);
         tableView1(tablePanel);   //Add tableView
         makeHorizontalPane(tablePanel);   //Add fieldsPane
         createInformationPanel(informationPanel);  //Add information Panel
@@ -78,6 +83,11 @@ public class menu extends Application {
 
     public static void addToObservableList(Client client){
         observableClientList.add(client);
+    }
+
+    public void createDatePicker(Pane parent){
+        datePicker = new DateController();
+        parent.getChildren().add(datePicker.createDatePicker());
     }
 
     public void createInformationPanel(Pane parent){
