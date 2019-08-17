@@ -19,7 +19,7 @@ public class DateController {
     }
 
     public DatePicker createDatePicker() {
-        date = new DatePicker();
+        date = new DatePicker(LocalDate.now());
 
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             @Override
@@ -38,11 +38,19 @@ public class DateController {
     }
 
     public String getSelectedDate() {
+        String finalDate = null;
+        try{
         String newDate = String.valueOf(selectedDate);
         String sub1 = newDate.substring(0, 4);
         String sub2 = newDate.substring(5, 7);
         String sub3 = newDate.substring(8, 10);
-        return (sub1 + sub2 + sub3);
+        finalDate = (sub1 + sub2 + sub3);}
+        catch(Exception e){
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            Date date = new Date(System.currentTimeMillis());
+            finalDate = (formatter.format(date));
+        }
+        return finalDate;
     }
 
     public String currentDate(){

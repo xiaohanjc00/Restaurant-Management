@@ -44,7 +44,7 @@ public class ClientDatabase {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             String sql2 =  "CREATE TABLE   CLIENT" + menu.datePicker.currentDate() +
                     " (name VARCHAR (255), " +
                     " tableNumber INTEGER, " +
@@ -56,7 +56,7 @@ public class ClientDatabase {
                 stmt.executeUpdate(sql2);
             }
             catch (SQLException ex) {
-                ex.printStackTrace();
+                //ex.printStackTrace();
             }
             finally{
                 String sql3 = "select * from CLIENT";
@@ -79,7 +79,7 @@ public class ClientDatabase {
                     }
                 }
                 catch (SQLException ex) {
-                    ex.printStackTrace();
+                    //ex.printStackTrace();
                 }
             }
         }
@@ -105,7 +105,7 @@ public class ClientDatabase {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             String sql2 =  "CREATE TABLE   CLIENT" + suffix +
                     " (name VARCHAR (255), " +
                     " tableNumber INTEGER, " +
@@ -172,10 +172,10 @@ public class ClientDatabase {
 
         } catch(SQLException se) {
             //Handle errors for JDBC
-            se.printStackTrace();
+            //se.printStackTrace();
         } catch(Exception e) {
             //Handle errors for Class.forName
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -217,7 +217,7 @@ public class ClientDatabase {
     public static void printClients() {
         try {
 
-            String sql = "select * from CLIENT" + menu.datePicker.currentDate();
+            String sql = "select * from CLIENT" + menu.datePicker.getSelectedDate();
             stmt.executeQuery(sql);
             System.out.println("Showing clients...");
             ResultSet rs = stmt.executeQuery(sql);
@@ -288,18 +288,18 @@ public class ClientDatabase {
         }
     }
 
-    public void deleteClient(Client newClient){
+    public void deleteClient(Client newClient, String suffix){
         try{
             String sql = "INSERT INTO DELETEDCLIENT (name, tableNumber, numberOfPerson, phoneNumber, comment) " +
                     "SELECT * " +
-                    "FROM CLIENT " +
-                    "WHERE (name = " + "'" + newClient.getName() + "'" + " AND " +
+                    "FROM CLIENT" + suffix +
+                    " WHERE (name = " + "'" + newClient.getName() + "'" + " AND " +
                     "tableNumber = " + "'" + newClient.getTableNumber() + "'" + " AND " +
                     "numberOfPerson = " + "'" + newClient.getNumberOfPerson() + "'" + " AND " +
                     "phoneNumber = " + "'" + newClient.getPhoneNumber() + "'" + " AND " +
                     "comment = " + "'" + newClient.getComment() + "' )" ;
-            String sql2 = "DELETE FROM CLIENT " +
-                    "WHERE (name = " + "'" + newClient.getName() + "'" + " AND " +
+            String sql2 = "DELETE FROM CLIENT" + suffix +
+                    " WHERE (name = " + "'" + newClient.getName() + "'" + " AND " +
                     "tableNumber = " + "'" + newClient.getTableNumber() + "'" + " AND " +
                     "numberOfPerson = " + "'" + newClient.getNumberOfPerson() + "'" + " AND " +
                     "phoneNumber = " + "'" + newClient.getPhoneNumber() + "'" + " AND " +
@@ -315,8 +315,8 @@ public class ClientDatabase {
 
     public static void editName(String newName, int phoneNumber){
         try{
-            String sql = "UPDATE CLIENT " +
-                    "SET name = " + "'" + newName + "'" +
+            String sql = "UPDATE CLIENT" + menu.suffix +
+                    " SET name = " + "'" + newName + "'" +
                     "WHERE phoneNumber = " + "'" + phoneNumber + "'";
             stmt.executeUpdate(sql);
         }
@@ -327,8 +327,8 @@ public class ClientDatabase {
 
     public static void editTableNumber(int newTableNumber, int phoneNumber){
         try{
-            String sql = "UPDATE CLIENT " +
-                    "SET tableNumber = " + "'" + newTableNumber + "'" +
+            String sql = "UPDATE CLIENT" + menu.suffix +
+                    " SET tableNumber = " + "'" + newTableNumber + "'" +
                     "WHERE phoneNumber = " + "'" + phoneNumber + "'";
             stmt.executeUpdate(sql);
         }
@@ -339,7 +339,7 @@ public class ClientDatabase {
 
     public static void editNumberOfPerson(int newNumberOfPerson, int phoneNumber){
         try{
-            String sql = "UPDATE CLIENT " +
+            String sql = "UPDATE CLIENT" + menu.suffix +
                     "SET numberOfPerson = " + "'" + newNumberOfPerson + "'" +
                     "WHERE phoneNumber = " + "'" + phoneNumber + "'";
             stmt.executeUpdate(sql);
@@ -351,7 +351,7 @@ public class ClientDatabase {
 
     public static void editPhoneNumber(int newPhoneNumber, String name, int tableNumber, int numberOfPerson, String comment){
         try{
-            String sql = "UPDATE CLIENT " +
+            String sql = "UPDATE CLIENT" + menu.suffix +
                     "SET phoneNumber = " + "'" + newPhoneNumber + "'" +
                     "WHERE name = " + "'" + name + "'" + " AND " +
                     "tableNumber = " + "'" + tableNumber + "'" + " AND " +
@@ -366,7 +366,7 @@ public class ClientDatabase {
 
     public static void editComment(String newComment, int phoneNumber){
         try{
-            String sql = "UPDATE CLIENT " +
+            String sql = "UPDATE CLIENT" + menu.suffix +
                     "SET comment = " + "'" + newComment + "'" +
                     "WHERE phoneNumber = " + "'" + phoneNumber + "'";
             stmt.executeUpdate(sql);

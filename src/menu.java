@@ -49,6 +49,7 @@ public class menu extends Application {
     static ClientDatabase database;
     LocalDate selectedDate;
     static DateController datePicker;
+    static String suffix;
 
     @Override
     public void start(Stage primaryStage) {
@@ -66,7 +67,6 @@ public class menu extends Application {
         clientList = new ClientList();
         observableClientList = FXCollections.observableList(clientList.showClientList());
 
-        //datePicker = new DateController();
 
         database = new ClientDatabase();
         database.createDatabase();
@@ -90,6 +90,7 @@ public class menu extends Application {
     public void createDatePicker(Pane parent){
         datePicker = new DateController();
         parent.getChildren().add(datePicker.createDatePicker());
+        suffix = datePicker.currentDate();
     }
 
     public void createInformationPanel(Pane parent){
@@ -181,6 +182,7 @@ public class menu extends Application {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
                     ).setName(t.getNewValue());
                     setLabels();
+                    suffix = datePicker.getSelectedDate();
                     database.editName(t.getTableView().getItems().get(t.getTablePosition().getRow()).getName(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
                     database.printClients();
                 }
@@ -196,6 +198,7 @@ public class menu extends Application {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
                     ).setTableNumber(Integer.parseInt(String.valueOf(t.getNewValue())));
                     setLabels();
+                    suffix = datePicker.getSelectedDate();
                     database.editTableNumber(t.getTableView().getItems().get(t.getTablePosition().getRow()).getTableNumber(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
                     database.printClients();
                 }
@@ -211,6 +214,7 @@ public class menu extends Application {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
                     ).setNumberOfPerson(Integer.parseInt(String.valueOf(t.getNewValue())));
                     setLabels();
+                    suffix = datePicker.getSelectedDate();
                     database.editNumberOfPerson(t.getTableView().getItems().get(t.getTablePosition().getRow()).getNumberOfPerson(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
                     database.printClients();
                 }
@@ -226,6 +230,7 @@ public class menu extends Application {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
                     ).setPhoneNumber(Integer.parseInt(String.valueOf(t.getNewValue())));
                     setLabels();
+                    suffix = datePicker.getSelectedDate();
                     database.editPhoneNumber(t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber(),
                             t.getTableView().getItems().get(t.getTablePosition().getRow()).getName(),
                             t.getTableView().getItems().get(t.getTablePosition().getRow()).getTableNumber(),
@@ -245,6 +250,7 @@ public class menu extends Application {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
                     ).setComment(t.getNewValue());
                     setLabels();
+                    suffix = datePicker.getSelectedDate();
                     database.editComment(t.getTableView().getItems().get(t.getTablePosition().getRow()).getComment(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
                     database.printClients();
                 }
@@ -342,6 +348,7 @@ public class menu extends Application {
             Client newClient = new Client(newName, newTableNumber, newNumberOfPerson, newPhoneNumber, newComment);
             System.out.println(newClient.getName());
             database.addClient(newClient, datePicker.getSelectedDate());
+
             database.printClients();
 
             //Add new client to the observableList and set tables to appear the values from the list
@@ -369,7 +376,7 @@ public class menu extends Application {
     private void deleteClient(ActionEvent event){
         try{
             Client deletedClient = table1.getSelectionModel().getSelectedItem();
-            database.deleteClient(deletedClient);
+            database.deleteClient(deletedClient, datePicker.getSelectedDate());
             database.printClients();
             database.printDeletedClients();
 
