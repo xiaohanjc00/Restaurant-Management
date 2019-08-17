@@ -2,11 +2,11 @@ import javax.print.DocFlavor;
 import java.sql.*;
 
 public class ClientDatabase {
-    // JDBC driver name and database URL
+    //JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.h2.Driver";
     static final String DB_URL = "jdbc:h2:~/test4";
 
-    //  Database credentials
+    //Database credentials
     static final String USER = "sa";
     static final String PASS = "";
 
@@ -19,77 +19,19 @@ public class ClientDatabase {
 
     public static void main(String[] args) {
         createDatabase();
-        test();
+        createSecondaryDatabase();
         printClients();
     }
 
-
-    public static void startTable(){
-        try {
-            String sql = "select * from CLIENT" + menu.datePicker.currentDate();
-            stmt.executeQuery(sql);
-            System.out.println("Showing clients...");
-            ResultSet rs = stmt.executeQuery(sql);
-
-            while (rs.next()) {
-                // Retrieve by column name
-                String name = rs.getString("name");
-                int tableNumber = rs.getInt("tableNumber");
-                int numberOfPerson = rs.getInt("numberOfPerson");
-                int phoneNumber = rs.getInt("phoneNumber");
-                String comment = rs.getString("comment");
-
-                Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment);
-                menu.addToObservableList(newClient);
-            }
-
-        } catch (SQLException e) {
-            //e.printStackTrace();
-            String sql2 =  "CREATE TABLE   CLIENT" + menu.datePicker.currentDate() +
-                    " (name VARCHAR (255), " +
-                    " tableNumber INTEGER, " +
-                    " numberOfPerson INTEGER, " +
-                    " phoneNumber INTEGER, " +
-                    " comment VARCHAR(255)," +
-                    " PRIMARY KEY ( phoneNumber,name ))";
-            try {
-                stmt.executeUpdate(sql2);
-            }
-            catch (SQLException ex) {
-                //ex.printStackTrace();
-            }
-            finally{
-                String sql3 = "select * from CLIENT";
-                try {
-                    stmt.executeQuery(sql3);
-
-                    System.out.println("Showing clients...");
-                    ResultSet rs = stmt.executeQuery(sql3);
-
-                    while (rs.next()) {
-                        // Retrieve by column name
-                        String name = rs.getString("name");
-                        int tableNumber = rs.getInt("tableNumber");
-                        int numberOfPerson = rs.getInt("numberOfPerson");
-                        int phoneNumber = rs.getInt("phoneNumber");
-                        String comment = rs.getString("comment");
-
-                        Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment);
-                        menu.addToObservableList(newClient);
-                    }
-                }
-                catch (SQLException ex) {
-                    //ex.printStackTrace();
-                }
-            }
-        }
-    }
-
+    /**
+     * Show the values in the current day's database table
+     * if no such table, create one
+     */
     public static void startTable(String suffix){
         try {
-            String sql = "select * from CLIENT" + suffix;
+            String sql = "select * from CLIENT" + suffix;   //If database table exist, the show all the clients in the table
             stmt.executeQuery(sql);
-            System.out.println("Showing clients...");
+            System.out.println("Loading CLIENT" + suffix + " clients...");
             ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
@@ -100,12 +42,14 @@ public class ClientDatabase {
                 int phoneNumber = rs.getInt("phoneNumber");
                 String comment = rs.getString("comment");
 
+                //Create new client with the information above from the database
                 Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment);
-                menu.addToObservableList(newClient);
+                menu.addToObservableList(newClient);     //Add the new client to the observable list in the menu class
             }
 
         } catch (SQLException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
+            //If no such table exist, create the table
             String sql2 =  "CREATE TABLE   CLIENT" + suffix +
                     " (name VARCHAR (255), " +
                     " tableNumber INTEGER, " +
@@ -114,38 +58,21 @@ public class ClientDatabase {
                     " comment VARCHAR(255)," +
                     " PRIMARY KEY ( phoneNumber,name ))";
             try {
+                System.out.println("Creating new table for the current date...");
                 stmt.executeUpdate(sql2);
+                System.out.println("Table created...");
             }
             catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            finally{
-                String sql3 = "select * from CLIENT" + suffix;
-                try {
-                    stmt.executeQuery(sql3);
-
-                    System.out.println("Showing clients...");
-                    ResultSet rs = stmt.executeQuery(sql3);
-
-                    while (rs.next()) {
-                        // Retrieve by column name
-                        String name = rs.getString("name");
-                        int tableNumber = rs.getInt("tableNumber");
-                        int numberOfPerson = rs.getInt("numberOfPerson");
-                        int phoneNumber = rs.getInt("phoneNumber");
-                        String comment = rs.getString("comment");
-
-                        Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment);
-                        menu.addToObservableList(newClient);
-                    }
-                }
-                catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
         }
     }
 
+
+
+    /**
+     * Initial connection to the database
+     */
     public static void createDatabase(){
         try {
             // STEP 1: Register JDBC driver
@@ -155,30 +82,18 @@ public class ClientDatabase {
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL,USER,PASS);
 
-
-            //STEP 3: Execute a query
-            System.out.println("Creating table in given database...");
             stmt = conn.createStatement();
-            String sql =  "CREATE TABLE   CLIENT " +
-                    "(name VARCHAR (255), " +
-                    " tableNumber INTEGER, " +
-                    " numberOfPerson INTEGER, " +
-                    " phoneNumber INTEGER, " +
-                    " comment VARCHAR(255)," +
-                    " PRIMARY KEY ( phoneNumber,name ))";
-            stmt.executeUpdate(sql);
-            createSecondaryDatabase();
-            System.out.println("Created primary table in given database...");
 
-        } catch(SQLException se) {
-            //Handle errors for JDBC
+        } catch(SQLException se) {  //Handle errors for JDBC
             //se.printStackTrace();
-        } catch(Exception e) {
-            //Handle errors for Class.forName
+        } catch(Exception e) {  //Handle errors for Class.forName
             //e.printStackTrace();
         }
     }
 
+    /**
+     * Create new table for the deleted clients
+     */
     public static void createSecondaryDatabase(){
         try {
             String sql2 =  "CREATE TABLE DELETEDCLIENT " +
@@ -190,33 +105,20 @@ public class ClientDatabase {
                     " PRIMARY KEY ( phoneNumber,name ))";
 
             stmt.executeUpdate(sql2);
-            System.out.println("Created secondary table in given database...");
+            System.out.println("Created table for the deleted clients...");
 
-        } catch(SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch(Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
+        } catch(SQLException se) {  //Handle errors for JDBC
+            //se.printStackTrace();
+        } catch(Exception e) {  ////Handle errors for Class.forName
+            //e.printStackTrace();
         }
     }
 
-    public static void test(){
-        try {
-            String sql = "INSERT INTO CLIENT VALUES ('hola','122',12,123,'sdfg')";
-            System.out.println("hello...");
-            stmt.executeUpdate(sql);
-            System.out.println("Done...");
-
-        }
-        catch(Exception e){
-
-        }
-    }
-
+    /**
+     * Print out the clients in the current date table
+     */
     public static void printClients() {
         try {
-
             String sql = "select * from CLIENT" + menu.datePicker.getSelectedDate();
             stmt.executeQuery(sql);
             System.out.println("Showing clients...");
@@ -243,9 +145,11 @@ public class ClientDatabase {
         }
     }
 
+    /**
+     * Print out the clients in the deleted client table
+     */
     public static void printDeletedClients() {
         try {
-
             String sql = "select * from DELETEDCLIENT";
             stmt.executeQuery(sql);
             System.out.println("Showing deleted clients...");
@@ -272,6 +176,11 @@ public class ClientDatabase {
         }
     }
 
+    /**
+     * Add new clients to the corresponding database table
+     * @param newClient
+     * @param suffix
+     */
     public void addClient(Client newClient, String suffix){
         try{
             String sql2 = "INSERT INTO CLIENT" + suffix + " VALUES (" + "'" +
@@ -288,6 +197,11 @@ public class ClientDatabase {
         }
     }
 
+    /**
+     * Add new clients to the deleted client database table
+     * @param newClient
+     * @param suffix
+     */
     public void deleteClient(Client newClient, String suffix){
         try{
             String sql = "INSERT INTO DELETEDCLIENT (name, tableNumber, numberOfPerson, phoneNumber, comment) " +
@@ -313,6 +227,11 @@ public class ClientDatabase {
         }
     }
 
+    /**
+     * Edit the name value for a client in the selected date's table
+     * @param newName
+     * @param phoneNumber
+     */
     public static void editName(String newName, int phoneNumber){
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
@@ -325,6 +244,11 @@ public class ClientDatabase {
         }
     }
 
+    /**
+     * Edit the table number value for a client in the selected date's table
+     * @param newTableNumber
+     * @param phoneNumber
+     */
     public static void editTableNumber(int newTableNumber, int phoneNumber){
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
@@ -337,6 +261,11 @@ public class ClientDatabase {
         }
     }
 
+    /**
+     * Edit the number of person value for a client in the selected date's table
+     * @param newNumberOfPerson
+     * @param phoneNumber
+     */
     public static void editNumberOfPerson(int newNumberOfPerson, int phoneNumber){
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
@@ -349,6 +278,14 @@ public class ClientDatabase {
         }
     }
 
+    /**
+     * Edit the phone number value for a client in the selected date's table
+     * @param newPhoneNumber
+     * @param name
+     * @param tableNumber
+     * @param numberOfPerson
+     * @param comment
+     */
     public static void editPhoneNumber(int newPhoneNumber, String name, int tableNumber, int numberOfPerson, String comment){
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
@@ -364,6 +301,11 @@ public class ClientDatabase {
         }
     }
 
+    /**
+     * Edit the comment value for a client in the selected date's table
+     * @param newComment
+     * @param phoneNumber
+     */
     public static void editComment(String newComment, int phoneNumber){
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
@@ -376,6 +318,9 @@ public class ClientDatabase {
         }
     }
 
+    /**
+     * Closing the database process
+     */
     public static void closeDatabase(){
         try{
             stmt.close();
@@ -393,7 +338,7 @@ public class ClientDatabase {
         //finally block used to close resources
         try{
             if(stmt!=null) stmt.close();
-            }
+        }
         catch(SQLException se2) {
         } // nothing we can do
         try {
@@ -406,4 +351,3 @@ public class ClientDatabase {
         System.out.println("Goodbye!");
     }
 }
-
