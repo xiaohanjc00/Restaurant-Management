@@ -1,4 +1,5 @@
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,19 +10,19 @@ public class Client
     private SimpleStringProperty name;
     private int hour;
     private int minute;
-    private SimpleIntegerProperty phoneNumber;
+    private SimpleLongProperty phoneNumber;
     private SimpleStringProperty comment;
     private Time time;
     private Table table;
     private Tables tables;
-    public Client(String name, int tableNumber, int numberOfPerson, int phoneNumber, String comment)
+    public Client(String name, int tableNumber, int numberOfPerson, long phoneNumber, String comment)
     {
         this.tableNumber = new SimpleIntegerProperty(tableNumber);
         this.numberOfPerson = new SimpleIntegerProperty(numberOfPerson);
         this.name = new SimpleStringProperty(name);
         this.hour = hour;
         this.minute = minute;
-        this.phoneNumber = new SimpleIntegerProperty(phoneNumber);
+        this.phoneNumber = new SimpleLongProperty(phoneNumber);
         this.comment = new SimpleStringProperty(comment);
         table=null;
     }
@@ -54,11 +55,11 @@ public class Client
         }
 
      //phoneNumber
-     public int getPhoneNumber() {
+     public long getPhoneNumber() {
                 return phoneNumber.get();
             }
 
-     public void setPhoneNumber(int newPhoneNumber){
+     public void setPhoneNumber(long newPhoneNumber){
             phoneNumber.set(newPhoneNumber);
         }
 

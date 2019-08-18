@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
+import javafx.util.converter.LongStringConverter;
 import org.h2.Driver;
 import java.io.File;
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ public class menu extends Application {
     String informationName;
     int informationTableNumber;
     int informationNumberOfPerson;
-    int informationPhoneNumber;
+    long informationPhoneNumber;
     String informationComment;
     Label clientName;
     Label clientNumberOfPerson;
@@ -260,14 +261,14 @@ public class menu extends Application {
         );
 
         //Phone number column
-        TableColumn<Client, Integer> column4 = new TableColumn<>("Phone Number");
+        TableColumn<Client, Long> column4 = new TableColumn<>("Phone Number");
         column4.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
 
-        column4.setCellFactory(TextFieldTableCell.<Client, Integer>forTableColumn(new IntegerStringConverter()));   //Create editing cell
+        column4.setCellFactory(TextFieldTableCell.<Client, Long>forTableColumn(new LongStringConverter()));   //Create editing cell
         column4.setOnEditCommit(
-                (TableColumn.CellEditEvent<Client,Integer> t) -> {
+                (TableColumn.CellEditEvent<Client,Long> t) -> {
                     ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
-                    ).setPhoneNumber(Integer.parseInt(String.valueOf(t.getNewValue())));
+                    ).setPhoneNumber(Long.parseLong(String.valueOf( t.getNewValue())));
                     setLabels();    //Set information panel labels
 
                     suffix = datePicker.getSelectedDate();  //Set suffix as the selected date from the date picker
@@ -388,7 +389,7 @@ public class menu extends Application {
             String newComment = (commentField.getText());
             int newTableNumber = Integer.parseInt(tableNumberField.getText());
             int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
-            int newPhoneNumber = Integer.parseInt(phoneNumberField.getText());
+            long newPhoneNumber = Long.parseLong(phoneNumberField.getText());
             Client newClient = new Client(newName, newTableNumber, newNumberOfPerson, newPhoneNumber, newComment);
 
             //Add the new client to it corresponding database table

@@ -4,7 +4,7 @@ import java.sql.*;
 public class ClientDatabase {
     //JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:~/test4";
+    static final String DB_URL = "jdbc:h2:~/test5";
 
     //Database credentials
     static final String USER = "sa";
@@ -39,7 +39,7 @@ public class ClientDatabase {
                 String name = rs.getString("name");
                 int tableNumber = rs.getInt("tableNumber");
                 int numberOfPerson = rs.getInt("numberOfPerson");
-                int phoneNumber = rs.getInt("phoneNumber");
+                long phoneNumber = rs.getLong("phoneNumber");
                 String comment = rs.getString("comment");
 
                 //Create new client with the information above from the database
@@ -48,13 +48,13 @@ public class ClientDatabase {
             }
 
         } catch (SQLException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             //If no such table exist, create the table
             String sql2 =  "CREATE TABLE   CLIENT" + suffix +
                     " (name VARCHAR (255), " +
                     " tableNumber INTEGER, " +
                     " numberOfPerson INTEGER, " +
-                    " phoneNumber INTEGER, " +
+                    " phoneNumber BIGINT, " +
                     " comment VARCHAR(255)," +
                     " PRIMARY KEY ( phoneNumber,name ))";
             try {
@@ -64,7 +64,7 @@ public class ClientDatabase {
                 System.out.println("Loading CLIENT" + suffix + " clients...");
             }
             catch (SQLException ex) {
-                //ex.printStackTrace();
+                ex.printStackTrace();
             }
         }
     }
@@ -101,7 +101,7 @@ public class ClientDatabase {
                     "(name VARCHAR (255), " +
                     " tableNumber INTEGER, " +
                     " numberOfPerson INTEGER, " +
-                    " phoneNumber INTEGER, " +
+                    " phoneNumber BIGINT, " +
                     " comment VARCHAR(255)," +
                     " PRIMARY KEY ( phoneNumber,name ))";
 
@@ -109,9 +109,9 @@ public class ClientDatabase {
             System.out.println("Created table for the deleted clients...");
 
         } catch(SQLException se) {  //Handle errors for JDBC
-            //se.printStackTrace();
+            se.printStackTrace();
         } catch(Exception e) {  ////Handle errors for Class.forName
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -130,7 +130,7 @@ public class ClientDatabase {
                 String name = rs.getString("name");
                 int tableNumber = rs.getInt("tableNumber");
                 int numberOfPerson = rs.getInt("numberOfPerson");
-                int phoneNumber = rs.getInt("phoneNumber");
+                long phoneNumber = rs.getLong("phoneNumber");
                 String comment = rs.getString("comment");
 
                 // Display values
@@ -161,7 +161,7 @@ public class ClientDatabase {
                 String name = rs.getString("name");
                 int tableNumber = rs.getInt("tableNumber");
                 int numberOfPerson = rs.getInt("numberOfPerson");
-                int phoneNumber = rs.getInt("phoneNumber");
+                long phoneNumber = rs.getLong("phoneNumber");
                 String comment = rs.getString("comment");
 
                 // Display values
@@ -233,7 +233,7 @@ public class ClientDatabase {
      * @param newName
      * @param phoneNumber
      */
-    public static void editName(String newName, int phoneNumber){
+    public static void editName(String newName, long phoneNumber){
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
                     " SET name = " + "'" + newName + "'" +
@@ -250,7 +250,7 @@ public class ClientDatabase {
      * @param newTableNumber
      * @param phoneNumber
      */
-    public static void editTableNumber(int newTableNumber, int phoneNumber){
+    public static void editTableNumber(int newTableNumber, long phoneNumber){
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
                     " SET tableNumber = " + "'" + newTableNumber + "'" +
@@ -267,10 +267,10 @@ public class ClientDatabase {
      * @param newNumberOfPerson
      * @param phoneNumber
      */
-    public static void editNumberOfPerson(int newNumberOfPerson, int phoneNumber){
+    public static void editNumberOfPerson(int newNumberOfPerson, long phoneNumber){
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
-                    "SET numberOfPerson = " + "'" + newNumberOfPerson + "'" +
+                    " SET numberOfPerson = " + "'" + newNumberOfPerson + "'" +
                     "WHERE phoneNumber = " + "'" + phoneNumber + "'";
             stmt.executeUpdate(sql);
         }
@@ -287,10 +287,10 @@ public class ClientDatabase {
      * @param numberOfPerson
      * @param comment
      */
-    public static void editPhoneNumber(int newPhoneNumber, String name, int tableNumber, int numberOfPerson, String comment){
+    public static void editPhoneNumber(long newPhoneNumber, String name, int tableNumber, int numberOfPerson, String comment){
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
-                    "SET phoneNumber = " + "'" + newPhoneNumber + "'" +
+                    " SET phoneNumber = " + "'" + newPhoneNumber + "'" +
                     "WHERE name = " + "'" + name + "'" + " AND " +
                     "tableNumber = " + "'" + tableNumber + "'" + " AND " +
                     "numberOfPerson = " + "'" +  numberOfPerson + "'" + " AND " +
@@ -307,10 +307,10 @@ public class ClientDatabase {
      * @param newComment
      * @param phoneNumber
      */
-    public static void editComment(String newComment, int phoneNumber){
+    public static void editComment(String newComment, long phoneNumber){
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
-                    "SET comment = " + "'" + newComment + "'" +
+                    " SET comment = " + "'" + newComment + "'" +
                     "WHERE phoneNumber = " + "'" + phoneNumber + "'";
             stmt.executeUpdate(sql);
         }
