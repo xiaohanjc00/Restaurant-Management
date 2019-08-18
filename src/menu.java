@@ -77,6 +77,7 @@ public class menu extends Application {
         //Creation of the Client database
         database = new ClientDatabase();
         database.createDatabase();  //create the database tables
+        database.createSecondaryDatabase();
         database.startTable(datePicker.currentDate());      //start the tableview showing the values of the current date
 
         //Start table
@@ -303,7 +304,30 @@ public class menu extends Application {
         table1.getColumns().addAll(column1,column2,column3,column4,column5);
 
         //When press a cell make editing cell true
-        table1.setOnMousePressed(this::cellEditing);
+        table1.setOnMousePressed(
+                new EventHandler<javafx.scene.input.MouseEvent>() {
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent mouseEvent) {
+                        if (mouseEvent.getClickCount() == 1) {
+                            if (table1.getSelectionModel().isEmpty()) {  //Table cell selected is empty
+                                informationName = null;
+                                informationPhoneNumber = 1;
+                                informationTableNumber = 0;
+                                informationNumberOfPerson = 0;
+                                informationComment = null;
+
+                            } else {  //Selected a populated cell
+                                informationName = table1.getSelectionModel().getSelectedItem().getName();
+                                informationNumberOfPerson = table1.getSelectionModel().getSelectedItem().getNumberOfPerson();
+                                informationTableNumber = table1.getSelectionModel().getSelectedItem().getTableNumber();
+                                informationPhoneNumber = table1.getSelectionModel().getSelectedItem().getPhoneNumber();
+                                informationComment = table1.getSelectionModel().getSelectedItem().getComment();
+                            }
+                            setLabels();    //Set information panel labels
+                        }
+                    }
+                }
+        );
     }
 
     /**
@@ -399,6 +423,8 @@ public class menu extends Application {
 
             //Add new client to the observableList and set tables to appear the values from the list
             observableClientList.add(newClient);
+            System.out.println(observableClientList.size());
+            System.out.println(tableNumberField.getText());
             table1.setItems(observableClientList);
             table1.refresh();   //Refresh the items appearing in the table
 
@@ -421,6 +447,7 @@ public class menu extends Application {
 
     /**
      * Editing cell action
+     * why cannot separate this event into an independent event instead of being inside the tableview method
      * @param event
      */
     public void cellEditing(MouseEvent event){
@@ -428,9 +455,9 @@ public class menu extends Application {
             @Override
             public void handle(javafx.scene.input.MouseEvent mouseEvent) {
                 if (mouseEvent.getClickCount() == 1) {
-                    if (table1.getSelectionModel().isEmpty()) {  //Table cell seelcted is empty
+                    if (table1.getSelectionModel().isEmpty()) {  //Table cell selected is empty
                         informationName = null;
-                        informationPhoneNumber = 0;
+                        informationPhoneNumber = 1;
                         informationTableNumber = 0;
                         informationNumberOfPerson = 0;
                         informationComment = null;
