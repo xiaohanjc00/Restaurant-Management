@@ -49,6 +49,7 @@ public class menu extends Application {
     static ClientDatabase database;
     static DateController datePicker;
     static String suffix;
+    static boolean isDay = true;
 
     @Override
     public void start(Stage primaryStage) {
@@ -103,9 +104,21 @@ public class menu extends Application {
      * @param parent
      */
     public void createDatePicker(Pane parent){
+        Pane dateBox = new HBox();
+
         datePicker = new DateController();
-        parent.getChildren().add(datePicker.createDatePicker());
+
+        Button dayButton = new Button("Day");
+        dayButton.setOnAction(this::makeDay);
+        Button nightButton = new Button("Night");
+        nightButton.setOnAction(this::makeNight);
+
+        dateBox.getChildren().addAll(datePicker.createDatePicker(),dayButton,nightButton);
+        ((HBox) dateBox).setSpacing(20);
+
         suffix = datePicker.currentDate();  //set suffix to current date for the first time initialising the date controller
+
+        parent.getChildren().add(dateBox);
     }
 
     /**
@@ -358,6 +371,10 @@ public class menu extends Application {
         clientComment.setText(informationComment );
     }
 
+    public boolean getisDay(){
+        return isDay;
+    }
+
     //ACTIONS
 
     /**
@@ -466,5 +483,23 @@ public class menu extends Application {
             alert.setHeaderText(null);
             alert.setContentText("Error");
         }
+    }
+
+    private void makeDay(ActionEvent event){
+        isDay = true;
+        System.out.println(datePicker.selectedDate);
+        //System.out.println(getSelectedDate());
+        //System.out.println(currentDate());
+        menu.observableClientList.clear();
+        menu.database.startTable(datePicker.getSelectedDate());
+    }
+
+    private void makeNight(ActionEvent event){
+        isDay = false;
+        System.out.println(datePicker.selectedDate);
+        //System.out.println(getSelectedDate());
+        //System.out.println(currentDate());
+        menu.observableClientList.clear();
+        menu.database.startTable(datePicker.getSelectedDate());
     }
 }

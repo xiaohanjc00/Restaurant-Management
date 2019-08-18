@@ -48,7 +48,7 @@ public class ClientDatabase {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             //If no such table exist, create the table
             String sql2 =  "CREATE TABLE   CLIENT" + suffix +
                     " (name VARCHAR (255), " +
@@ -61,9 +61,10 @@ public class ClientDatabase {
                 System.out.println("Creating new table for the current date...");
                 stmt.executeUpdate(sql2);
                 System.out.println("Table created...");
+                System.out.println("Loading CLIENT" + suffix + " clients...");
             }
             catch (SQLException ex) {
-                ex.printStackTrace();
+                //ex.printStackTrace();
             }
         }
     }
@@ -141,7 +142,7 @@ public class ClientDatabase {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
