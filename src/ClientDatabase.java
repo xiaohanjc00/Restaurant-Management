@@ -122,6 +122,8 @@ public class ClientDatabase {
         try {
             String sql = "select * from CLIENT" + menu.datePicker.getSelectedDate();
             stmt.executeQuery(sql);
+            System.out.println("");
+            System.out.println("=====================================================================================");
             System.out.println("Showing clients...");
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -134,11 +136,15 @@ public class ClientDatabase {
                 String comment = rs.getString("comment");
 
                 // Display values
-                System.out.print("name: " + name);
+                System.out.println("---------------------------------------------------------------------------------");
+                System.out.print("|name: " + name);
                 System.out.print(", tableNumber: " + tableNumber);
                 System.out.print(", numberOfPerson: " + numberOfPerson);
                 System.out.println(", phoneNumber: " + phoneNumber);
-                System.out.println(", comment: " + comment);
+                System.out.println("|, comment: " + comment);
+                System.out.println("---------------------------------------------------------------------------------");
+
+
             }
 
         } catch (SQLException e) {
@@ -153,6 +159,8 @@ public class ClientDatabase {
         try {
             String sql = "select * from DELETEDCLIENT";
             stmt.executeQuery(sql);
+            System.out.println("");
+            System.out.println("=====================================================================================");
             System.out.println("Showing deleted clients...");
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -165,11 +173,13 @@ public class ClientDatabase {
                 String comment = rs.getString("comment");
 
                 // Display values
-                System.out.print("name: " + name);
+                System.out.println("---------------------------------------------------------------------------------");
+                System.out.print("|name: " + name);
                 System.out.print(", tableNumber: " + tableNumber);
                 System.out.print(", numberOfPerson: " + numberOfPerson);
                 System.out.println(", phoneNumber: " + phoneNumber);
-                System.out.println(", comment: " + comment);
+                System.out.println("|, comment: " + comment);
+                System.out.println("---------------------------------------------------------------------------------");
             }
 
         } catch (SQLException e) {
@@ -190,9 +200,15 @@ public class ClientDatabase {
                     newClient.getNumberOfPerson() + "'" + "," +"'" +
                     newClient.getPhoneNumber() + "'" + "," +"'" +
                     newClient.getComment() + "'" +  ")";
+            System.out.println("");
+            System.out.println("=====================================================================================");
             System.out.println("Inserting new values...");
+            System.out.println("=====================================================================================");
+            System.out.println("");
             stmt.executeUpdate(sql2);
             System.out.println("Done...");
+            System.out.println("=====================================================================================");
+            System.out.println("");
         }
         catch(Exception e){
         }
@@ -222,7 +238,11 @@ public class ClientDatabase {
 
             stmt.executeUpdate(sql);
             stmt.executeUpdate(sql2);
+            System.out.println("");
+            System.out.println("================================================================");
             System.out.println("Deleted...");
+            System.out.println("================================================================");
+            System.out.println("");
         }
         catch(Exception e){
         }

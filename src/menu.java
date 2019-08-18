@@ -51,6 +51,7 @@ public class menu extends Application {
     static DateController datePicker;
     static String suffix;
     static boolean isDay = true;
+    static Label dateLabel;
 
     @Override
     public void start(Stage primaryStage) {
@@ -109,16 +110,27 @@ public class menu extends Application {
         Pane dateBox = new HBox();
 
         datePicker = new DateController();
+        datePicker.createDatePicker();
+        datePicker.startDatePicker();
 
-        Button dayButton = new Button("Day");
+        dateLabel = new Label(datePicker.printDateText());
+        dateLabel.setFont(new Font("Potra", 20));
+        dateLabel.setMaxWidth(330);
+        dateLabel.setMinWidth(330);
+
+        Button dayButton = new Button("Day  ");
         dayButton.setOnAction(this::makeDay);
         Button nightButton = new Button("Night");
         nightButton.setOnAction(this::makeNight);
 
-        dateBox.getChildren().addAll(datePicker.createDatePicker(),dayButton,nightButton);
-        ((HBox) dateBox).setSpacing(20);
+        Pane buttonBox = new HBox();
+        buttonBox.getChildren().addAll(dayButton, nightButton);
+
+        dateBox.getChildren().addAll(datePicker.createDatePicker(),dateLabel, buttonBox);
+        ((HBox) dateBox).setSpacing(100);
 
         suffix = datePicker.currentDate();  //set suffix to current date for the first time initialising the date controller
+        //datePicker.startDatePicker();
 
         parent.getChildren().add(dateBox);
     }
@@ -400,6 +412,7 @@ public class menu extends Application {
         return isDay;
     }
 
+
     //ACTIONS
 
     /**
@@ -520,6 +533,8 @@ public class menu extends Application {
         //System.out.println(currentDate());
         menu.observableClientList.clear();
         menu.database.startTable(datePicker.getSelectedDate());
+
+        datePicker.setDateText();
     }
 
     private void makeNight(ActionEvent event){
@@ -529,5 +544,7 @@ public class menu extends Application {
         //System.out.println(currentDate());
         menu.observableClientList.clear();
         menu.database.startTable(datePicker.getSelectedDate());
+
+        datePicker.setDateText();
     }
 }

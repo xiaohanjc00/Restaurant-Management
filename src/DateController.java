@@ -15,7 +15,27 @@ public class DateController {
 
 
     public DateController() {
-        createDatePicker();
+
+    }
+
+    public String getDayOfWeek(){
+       return String.valueOf(selectedDate.getDayOfWeek());
+    }
+    public String getDay(){
+        String newDate = String.valueOf(selectedDate);
+        return newDate.substring(8, 10);
+    }
+    public String getMonth() {
+        return String.valueOf(selectedDate.getMonth());
+    }
+    public String getYear() {
+        String newDate = String.valueOf(selectedDate);
+        return newDate.substring(0, 4);
+    }
+
+    public void startDatePicker(){
+        date = new DatePicker(LocalDate.now());
+        selectedDate = date.getValue();
     }
 
     public DatePicker createDatePicker() {
@@ -28,9 +48,16 @@ public class DateController {
                 selectedDate = date.getValue();
                 System.out.println(selectedDate);
                 System.out.println(getSelectedDate());
+                System.out.println(selectedDate.getDayOfWeek());
                 //System.out.println(currentDate());
                 menu.observableClientList.clear();
                 menu.database.startTable(getSelectedDate());
+                menu.dateLabel.setText(getDayOfWeek() + " " +
+                        getDay() + " " +
+                        getMonth() + " " +
+                        getYear() + "   " +
+                        printTimeOfDay());
+
             }
         };
 
@@ -77,5 +104,32 @@ public class DateController {
 
     public String dateSelecter(){
         return null;
+    }
+
+    public String printTimeOfDay(){
+        String finalPrint = null;
+        if(menu.isDay == true){
+            finalPrint = "DAY";
+        }
+        else{
+            finalPrint = "NIGHT";
+        }
+        return finalPrint;
+    }
+
+    public void setDateText(){
+         menu.dateLabel.setText(getDayOfWeek() + " " +
+                getDay() + " " +
+                getMonth() + " " +
+                getYear() + "   " +
+                printTimeOfDay());
+    }
+
+    public  String printDateText(){
+        return (getDayOfWeek() + " " +
+                getDay() + " " +
+                getMonth() + " " +
+                getYear() + "   " +
+                printTimeOfDay());
     }
 }
