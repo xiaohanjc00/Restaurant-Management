@@ -57,14 +57,11 @@ public class DateController {
                         getMonth() + " " +
                         getYear() + "   " +
                         printTimeOfDay());
-
             }
         };
-
         date.setOnAction(event);
         return date;
     }
-
 
     public String getSelectedDate() {
         String finalDate = null;

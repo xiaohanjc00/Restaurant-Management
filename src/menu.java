@@ -35,6 +35,7 @@ public class menu extends Application {
     TextField numberOfPersonField = new TextField();
     TextField phoneNumberField = new TextField();
     TextField commentField = new TextField();
+    static ComboBox timeChooser;
     ClientList clientList;
     static TableView<Client> table1 = new TableView<>();
     static ObservableList<Client> observableClientList;
@@ -43,20 +44,22 @@ public class menu extends Application {
     int informationNumberOfPerson;
     long informationPhoneNumber;
     String informationComment;
+    String informationTime;
     Label clientName;
     Label clientNumberOfPerson;
     Label clientTableNumber;
     Label clientPhoneNumber;
     Label clientComment;
+    Label clientTime;
     static ClientDatabase database;
     static DateController datePicker;
     static String suffix;
     static boolean isDay = true;
     static Label dateLabel;
 
-    TableColumn<Client, String> column6;
+    static TableColumn<Client, String> column6;
 
-    ObservableList<String> choiceBox;
+    static ObservableList<String> choiceBox;
 
     @Override
     public void start(Stage primaryStage) {
@@ -183,6 +186,12 @@ public class menu extends Application {
         commentLine.getChildren().addAll(fixedComment, clientComment);
         ((HBox) commentLine).setSpacing(20);
 
+        Pane timeLine = new HBox();  //Level 2
+        Label fixedTime = new Label("Time:"); //Level 3
+        clientTime = new Label(informationComment);  //Level 3
+        timeLine.getChildren().addAll(fixedTime, clientTime);
+        ((HBox) timeLine).setSpacing(20);
+
         Button deleteButton = new Button("Delete"); //Level 2
         deleteButton.setPrefWidth(70);
         deleteButton.setPrefHeight(20);
@@ -191,7 +200,7 @@ public class menu extends Application {
 
         ((VBox) mainInformationBox).setSpacing(30);
 
-        mainInformationBox.getChildren().addAll(informationTitle, nameLine, tableNumberLine, numberOfPersonLine, phoneNumberLine, commentLine, deleteButton);
+        mainInformationBox.getChildren().addAll(informationTitle, nameLine, tableNumberLine, numberOfPersonLine, phoneNumberLine, commentLine, timeLine, deleteButton);
         mainInformationBox.setPadding(new Insets(20,0,0,20));
     }
 
@@ -321,13 +330,28 @@ public class menu extends Application {
 
         column6 = new TableColumn<>("Time");
         column6.setCellValueFactory(new PropertyValueFactory<>("time"));
-        //tableList1.addAll("21:00","21:15","21:30","21:45");
         choiceBox = FXCollections.observableList(choiceBoxList());
         column6.setCellFactory(ComboBoxTableCell.forTableColumn(choiceBox));
+        column6.setOnEditCommit(
+                (TableColumn.CellEditEvent<Client,String> t) -> {
+                    ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
+                    ).setTime(t.getNewValue());
+                    System.out.println(((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
+                    ).getTime());
+                    setLabels();    //Set information panel labels
+
+                    suffix = datePicker.getSelectedDate();  //Set suffix as the selected date from the date picker
+                    //Make the changes to the database
+                    database.editTime(t.getTableView().getItems().get(t.getTablePosition().getRow()).getTime(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                    database.printClients();
+
+                }
+        );
 
 
         //Add all columns to the table view
         table1.getColumns().addAll(column1,column2,column3,column4,column5, column6);
+        table1.getSortOrder().add(column6);
 
         //When press a cell make editing cell true
         table1.setOnMousePressed(
@@ -341,6 +365,7 @@ public class menu extends Application {
                                 informationTableNumber = 0;
                                 informationNumberOfPerson = 0;
                                 informationComment = null;
+                                informationTime = null;
 
                             } else {  //Selected a populated cell
                                 informationName = table1.getSelectionModel().getSelectedItem().getName();
@@ -348,6 +373,7 @@ public class menu extends Application {
                                 informationTableNumber = table1.getSelectionModel().getSelectedItem().getTableNumber();
                                 informationPhoneNumber = table1.getSelectionModel().getSelectedItem().getPhoneNumber();
                                 informationComment = table1.getSelectionModel().getSelectedItem().getComment();
+                                informationTime = table1.getSelectionModel().getSelectedItem().getTime();
                             }
                             setLabels();    //Set information panel labels
                         }
@@ -356,7 +382,7 @@ public class menu extends Application {
         );
     }
 
-    public List choiceBoxList() {
+    public static List choiceBoxList() {
         List finalList = new ArrayList();
         List nightList = new ArrayList();
         nightList.add("20:30");
@@ -413,6 +439,8 @@ public class menu extends Application {
         //First line for the field box - include name, phone number, table number
         Pane firstLineInformation = new HBox();
         firstLineInformation.setPadding(new Insets(5));
+        Pane secondLineInformation = new HBox();
+        secondLineInformation.setPadding(new Insets(5));
 
         //Add all panes to parent
         parent.getChildren().addAll(mainBox, fieldBox);
@@ -435,6 +463,9 @@ public class menu extends Application {
         commentField.setPromptText("Comment");
         commentField.setAlignment(Pos.CENTER);
 
+        timeChooser = new ComboBox(FXCollections.observableArrayList(choiceBoxList()));
+        timeChooser.setPromptText("Time");
+
         //Create Add button
         Button addButton = new Button("Add");
         addButton.setPrefWidth(100);
@@ -443,12 +474,14 @@ public class menu extends Application {
 
         //Add all components to its pane
         firstLineInformation.getChildren().addAll(nameField, tableNumberField, numberOfPersonField, phoneNumberField);
-        fieldBox.getChildren().addAll(firstLineInformation, commentField);
+        secondLineInformation.getChildren().addAll(commentField, timeChooser);
+        fieldBox.getChildren().addAll(firstLineInformation, secondLineInformation);
         mainBox.getChildren().addAll(fieldBox, addButton);
 
         //Set spacing
         ((HBox) mainBox).setSpacing(30);
         ((HBox) firstLineInformation).setSpacing(5);
+        ((HBox) secondLineInformation).setSpacing(5);
     }
 
     /**
@@ -461,10 +494,17 @@ public class menu extends Application {
         clientTableNumber.setText(informationTableNumber + " ");
         clientPhoneNumber.setText(informationPhoneNumber + " ");
         clientComment.setText(informationComment );
+        clientTime.setText(informationTime);
     }
 
-    public boolean getisDay(){
-        return isDay;
+    public static void setTimeRange(){
+        choiceBox = FXCollections.observableList(choiceBoxList());
+        column6.setCellFactory(ComboBoxTableCell.forTableColumn(choiceBox));
+    }
+
+    public static void setAddingTimeRange(){
+        choiceBox = FXCollections.observableList(choiceBoxList());
+        timeChooser.setItems(choiceBox);
     }
 
 
@@ -482,7 +522,8 @@ public class menu extends Application {
             int newTableNumber = Integer.parseInt(tableNumberField.getText());
             int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
             long newPhoneNumber = Long.parseLong(phoneNumberField.getText());
-            Client newClient = new Client(newName, newTableNumber, newNumberOfPerson, newPhoneNumber, newComment, null);
+            String newTime = timeChooser.getSelectionModel().getSelectedItem().toString();
+            Client newClient = new Client(newName, newTableNumber, newNumberOfPerson, newPhoneNumber, newComment, newTime);
 
             //Add the new client to it corresponding database table
             database.addClient(newClient, datePicker.getSelectedDate());
@@ -494,6 +535,7 @@ public class menu extends Application {
             System.out.println(observableClientList.size());
             System.out.println(tableNumberField.getText());
             table1.setItems(observableClientList);
+            table1.getSortOrder().add(column6);
             table1.refresh();   //Refresh the items appearing in the table
 
             //Clear fields
@@ -529,6 +571,7 @@ public class menu extends Application {
                         informationTableNumber = 0;
                         informationNumberOfPerson = 0;
                         informationComment = null;
+                        informationTime = null;
 
                     } else {  //Selected a populated cell
                         informationName = table1.getSelectionModel().getSelectedItem().getName();
@@ -536,6 +579,7 @@ public class menu extends Application {
                         informationTableNumber = table1.getSelectionModel().getSelectedItem().getTableNumber();
                         informationPhoneNumber = table1.getSelectionModel().getSelectedItem().getPhoneNumber();
                         informationComment = table1.getSelectionModel().getSelectedItem().getComment();
+                        informationTime = table1.getSelectionModel().getSelectedItem().getTime();
                     }
                     setLabels();    //Set information panel labels
                 }
@@ -561,7 +605,7 @@ public class menu extends Application {
 
             //Remove the deleted client form the observable list
             observableClientList.remove(table1.getSelectionModel().getSelectedItem());
-
+            table1.getSortOrder().add(column6);
             table1.refresh();   //Refresh the table to make the deleted client disappear
 
             //Reset the information panel values
@@ -589,8 +633,8 @@ public class menu extends Application {
         menu.observableClientList.clear();
         menu.database.startTable(datePicker.getSelectedDate());
 
-        choiceBox = FXCollections.observableList(choiceBoxList());
-        column6.setCellFactory(ComboBoxTableCell.forTableColumn(choiceBox));
+        setTimeRange();
+        setAddingTimeRange();
 
         datePicker.setDateText();
     }
@@ -603,8 +647,8 @@ public class menu extends Application {
         menu.observableClientList.clear();
         menu.database.startTable(datePicker.getSelectedDate());
 
-        choiceBox = FXCollections.observableList(choiceBoxList());
-        column6.setCellFactory(ComboBoxTableCell.forTableColumn(choiceBox));
+        setTimeRange();
+        setAddingTimeRange();
 
         datePicker.setDateText();
     }

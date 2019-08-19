@@ -12,7 +12,8 @@ public class Client
     private int minute;
     private SimpleLongProperty phoneNumber;
     private SimpleStringProperty comment;
-    private Time time;
+    private SimpleStringProperty time;
+    //private Time time;
     private Table table;
     private Tables tables;
     public Client(String name, int tableNumber, int numberOfPerson, long phoneNumber, String comment, String time)
@@ -24,6 +25,7 @@ public class Client
         this.minute = minute;
         this.phoneNumber = new SimpleLongProperty(phoneNumber);
         this.comment = new SimpleStringProperty(comment);
+        this.time = new SimpleStringProperty(time);
         table=null;
     }
 
@@ -74,11 +76,11 @@ public class Client
 
     //time
     public String getTime() {
-        return name.get();
+        return time.get();
     }
 
     public void setTime(String newTime) {
-        name.set(newTime);
+        time.set(newTime);
     }
 
 
