@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateController {
-    LocalDate selectedDate;
+    static LocalDate selectedDate;
     DatePicker date;
 
 
@@ -18,17 +18,17 @@ public class DateController {
 
     }
 
-    public String getDayOfWeek(){
+    public static String getDayOfWeek(){
        return String.valueOf(selectedDate.getDayOfWeek());
     }
-    public String getDay(){
+    public static String getDay(){
         String newDate = String.valueOf(selectedDate);
         return newDate.substring(8, 10);
     }
-    public String getMonth() {
+    public static String getMonth() {
         return String.valueOf(selectedDate.getMonth());
     }
-    public String getYear() {
+    public static String getYear() {
         String newDate = String.valueOf(selectedDate);
         return newDate.substring(0, 4);
     }
@@ -52,11 +52,8 @@ public class DateController {
                 //System.out.println(currentDate());
                 menu.observableClientList.clear();
                 menu.database.startTable(getSelectedDate());
-                menu.dateLabel.setText(getDayOfWeek() + " " +
-                        getDay() + " " +
-                        getMonth() + " " +
-                        getYear() + "   " +
-                        printTimeOfDay());
+                setDateText();
+                menu.setAddingTimeRange();
             }
         };
         date.setOnAction(event);
@@ -103,7 +100,7 @@ public class DateController {
         return null;
     }
 
-    public String printTimeOfDay(){
+    public static String printTimeOfDay(){
         String finalPrint = null;
         if(menu.isDay == true){
             finalPrint = "DAY";
@@ -114,7 +111,7 @@ public class DateController {
         return finalPrint;
     }
 
-    public void setDateText(){
+    public static void setDateText(){
          menu.dateLabel.setText(getDayOfWeek() + " " +
                 getDay() + " " +
                 getMonth() + " " +

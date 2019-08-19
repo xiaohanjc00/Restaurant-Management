@@ -463,7 +463,9 @@ public class menu extends Application {
         commentField.setPromptText("Comment");
         commentField.setAlignment(Pos.CENTER);
 
+
         timeChooser = new ComboBox(FXCollections.observableArrayList(choiceBoxList()));
+        setAddingTimeRange();
         timeChooser.setPromptText("Time");
 
         //Create Add button
@@ -614,6 +616,7 @@ public class menu extends Application {
             informationNumberOfPerson = 0;
             informationPhoneNumber = 0;
             informationTableNumber = 0;
+            informationTime = null;
 
             setLabels();    //Show information panel new values
         }
@@ -646,10 +649,10 @@ public class menu extends Application {
         //System.out.println(currentDate());
         menu.observableClientList.clear();
         menu.database.startTable(datePicker.getSelectedDate());
+        isDay = false;
 
         setTimeRange();
         setAddingTimeRange();
-
         datePicker.setDateText();
     }
 }

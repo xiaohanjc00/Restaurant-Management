@@ -55,7 +55,7 @@ public class ClientDatabase {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             //If no such table exist, create the table
             String sql2 =  "CREATE TABLE   CLIENT" + suffix +
                     " (name VARCHAR (255), " +
@@ -74,7 +74,7 @@ public class ClientDatabase {
                 menu.setTimeRange();
             }
             catch (SQLException ex) {
-                ex.printStackTrace();
+                //ex.printStackTrace();
             }
         }
     }
@@ -237,7 +237,7 @@ public class ClientDatabase {
      */
     public void deleteClient(Client newClient, String suffix){
         try{
-            String sql = "INSERT INTO DELETEDCLIENT (name, tableNumber, numberOfPerson, phoneNumber, comment) " +
+            String sql = "INSERT INTO DELETEDCLIENT (name, tableNumber, numberOfPerson, phoneNumber, comment, time) " +
                     "SELECT * " +
                     "FROM CLIENT" + suffix +
                     " WHERE (name = " + "'" + newClient.getName() + "'" + " AND " +
