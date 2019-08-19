@@ -54,6 +54,8 @@ public class menu extends Application {
     static boolean isDay = true;
     static Label dateLabel;
 
+    TableColumn<Client, String> column6;
+
     ObservableList<String> choiceBox;
 
     @Override
@@ -317,11 +319,8 @@ public class menu extends Application {
                 }
         );
 
-        TableColumn<Client, String> column6 = new TableColumn<>("Time");
+        column6 = new TableColumn<>("Time");
         column6.setCellValueFactory(new PropertyValueFactory<>("time"));
-
-
-
         //tableList1.addAll("21:00","21:15","21:30","21:45");
         choiceBox = FXCollections.observableList(choiceBoxList());
         column6.setCellFactory(ComboBoxTableCell.forTableColumn(choiceBox));
@@ -590,6 +589,9 @@ public class menu extends Application {
         menu.observableClientList.clear();
         menu.database.startTable(datePicker.getSelectedDate());
 
+        choiceBox = FXCollections.observableList(choiceBoxList());
+        column6.setCellFactory(ComboBoxTableCell.forTableColumn(choiceBox));
+
         datePicker.setDateText();
     }
 
@@ -600,6 +602,9 @@ public class menu extends Application {
         //System.out.println(currentDate());
         menu.observableClientList.clear();
         menu.database.startTable(datePicker.getSelectedDate());
+
+        choiceBox = FXCollections.observableList(choiceBoxList());
+        column6.setCellFactory(ComboBoxTableCell.forTableColumn(choiceBox));
 
         datePicker.setDateText();
     }
