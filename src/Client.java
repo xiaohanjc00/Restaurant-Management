@@ -15,7 +15,7 @@ public class Client
     private Time time;
     private Table table;
     private Tables tables;
-    public Client(String name, int tableNumber, int numberOfPerson, long phoneNumber, String comment)
+    public Client(String name, int tableNumber, int numberOfPerson, long phoneNumber, String comment, String time)
     {
         this.tableNumber = new SimpleIntegerProperty(tableNumber);
         this.numberOfPerson = new SimpleIntegerProperty(numberOfPerson);
@@ -71,6 +71,15 @@ public class Client
      public void setComment(String newComment){
             comment.set(newComment);
         }
+
+    //time
+    public String getTime() {
+        return name.get();
+    }
+
+    public void setTime(String newTime) {
+        name.set(newTime);
+    }
 
 
 

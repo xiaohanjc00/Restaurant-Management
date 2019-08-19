@@ -43,7 +43,7 @@ public class ClientDatabase {
                 String comment = rs.getString("comment");
 
                 //Create new client with the information above from the database
-                Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment);
+                Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment, null);
                 menu.addToObservableList(newClient);     //Add the new client to the observable list in the menu class
             }
 

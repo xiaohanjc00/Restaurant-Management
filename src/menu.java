@@ -1,5 +1,7 @@
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -7,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
@@ -16,11 +19,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.LocalDateStringConverter;
 import javafx.util.converter.LongStringConverter;
-import org.h2.Driver;
-import java.io.File;
-import java.time.LocalDate;
+
+import java.util.*;
 
 
 public class menu extends Application {
@@ -53,6 +54,8 @@ public class menu extends Application {
     static boolean isDay = true;
     static Label dateLabel;
 
+    ObservableList<String> choiceBox;
+
     @Override
     public void start(Stage primaryStage) {
         //Creation of the root pane
@@ -74,6 +77,7 @@ public class menu extends Application {
         //Creation of ClientList and observableClientList
         clientList = new ClientList();
         observableClientList = FXCollections.observableList(clientList.showClientList());
+
 
         //Creation of the Client database
         database = new ClientDatabase();
@@ -127,7 +131,7 @@ public class menu extends Application {
         buttonBox.getChildren().addAll(dayButton, nightButton);
 
         dateBox.getChildren().addAll(datePicker.createDatePicker(),dateLabel, buttonBox);
-        ((HBox) dateBox).setSpacing(100);
+        ((HBox) dateBox).setSpacing(90);
 
         suffix = datePicker.currentDate();  //set suffix to current date for the first time initialising the date controller
         //datePicker.startDatePicker();
@@ -312,8 +316,19 @@ public class menu extends Application {
                     database.printClients();
                 }
         );
+
+        TableColumn<Client, String> column6 = new TableColumn<>("Time");
+        column6.setCellValueFactory(new PropertyValueFactory<>("time"));
+
+
+
+        //tableList1.addAll("21:00","21:15","21:30","21:45");
+        choiceBox = FXCollections.observableList(choiceBoxList());
+        column6.setCellFactory(ComboBoxTableCell.forTableColumn(choiceBox));
+
+
         //Add all columns to the table view
-        table1.getColumns().addAll(column1,column2,column3,column4,column5);
+        table1.getColumns().addAll(column1,column2,column3,column4,column5, column6);
 
         //When press a cell make editing cell true
         table1.setOnMousePressed(
@@ -341,6 +356,47 @@ public class menu extends Application {
                 }
         );
     }
+
+    public List choiceBoxList() {
+        List finalList = new ArrayList();
+        List nightList = new ArrayList();
+        nightList.add("20:30");
+        nightList.add("20:45");
+        nightList.add("21:00");
+        nightList.add("21:15");
+        nightList.add("21:30");
+        nightList.add("21:45");
+        nightList.add("22:00");
+        nightList.add("22:15");
+        nightList.add("22:30");
+        nightList.add("22:45");
+        nightList.add("23:00");
+        nightList.add("23:15");
+        nightList.add("23:30");
+        nightList.add("23:45");
+        nightList.add("24:00");
+
+        List dayList = new ArrayList<>();
+        dayList.add("13:30");
+        dayList.add("13:45");
+        dayList.add("14:00");
+        dayList.add("14:15");
+        dayList.add("14:30");
+        dayList.add("14:45");
+        dayList.add("15:00");
+        dayList.add("15:15");
+        dayList.add("15:30");
+        dayList.add("15:45");
+        dayList.add("16:00");
+
+        if (isDay == true) {
+            finalList = dayList;
+        } else {
+            finalList = nightList;
+        }
+        return finalList;
+    }
+
 
     /**
      * Creation of the horizontal pane for adding new clients
@@ -427,7 +483,7 @@ public class menu extends Application {
             int newTableNumber = Integer.parseInt(tableNumberField.getText());
             int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
             long newPhoneNumber = Long.parseLong(phoneNumberField.getText());
-            Client newClient = new Client(newName, newTableNumber, newNumberOfPerson, newPhoneNumber, newComment);
+            Client newClient = new Client(newName, newTableNumber, newNumberOfPerson, newPhoneNumber, newComment, null);
 
             //Add the new client to it corresponding database table
             database.addClient(newClient, datePicker.getSelectedDate());
