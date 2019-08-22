@@ -7,7 +7,7 @@ import java.sql.*;
 public class ClientDatabase {
     //JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:~/test7";
+    static final String DB_URL = "jdbc:h2:~/test10";
 
     //Database credentials
     static final String USER = "sa";
@@ -51,7 +51,7 @@ public class ClientDatabase {
                 //Create new client with the information above from the database
                 Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment, time);
                 menu.addToObservableList(newClient);     //Add the new client to the observable list in the menu class
-                menu.setTimeRange();
+                menu.setColumnTimeRange();
             }
 
         } catch (SQLException e) {
@@ -71,7 +71,7 @@ public class ClientDatabase {
                 System.out.println("Table created...");
                 System.out.println("Loading CLIENT" + suffix + " clients...");
                 menu.isDay = true;
-                menu.setTimeRange();
+                menu.setColumnTimeRange();
             }
             catch (SQLException ex) {
                 //ex.printStackTrace();

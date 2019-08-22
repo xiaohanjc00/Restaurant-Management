@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -71,9 +72,9 @@ public class menu extends Application {
          root.getChildren().addAll(tablePanel, informationPanel);
 
          //tablePanel components
-        menuBar(tablePanel);      //Add menuBar
+        createMenuBar(tablePanel);      //Add menuBar
         createDatePicker(tablePanel); //Add date picker
-        tableView1(tablePanel);   //Add tableView
+        createTableView(tablePanel);   //Add tableView
         makeHorizontalPane(tablePanel);   //Add fieldsPane
 
         //informationPanel components
@@ -124,19 +125,19 @@ public class menu extends Application {
 
         dateLabel = new Label(datePicker.printDateText());
         dateLabel.setFont(new Font("Potra", 20));
-        dateLabel.setMaxWidth(330);
-        dateLabel.setMinWidth(330);
+        dateLabel.setMaxWidth(350);
+        dateLabel.setMinWidth(350);
 
         Button dayButton = new Button("Day  ");
-        dayButton.setOnAction(this::makeDay);
+        dayButton.setOnAction(this::makeDayAction);
         Button nightButton = new Button("Night");
-        nightButton.setOnAction(this::makeNight);
+        nightButton.setOnAction(this::makeNightAction);
 
         Pane buttonBox = new HBox();
         buttonBox.getChildren().addAll(dayButton, nightButton);
 
         dateBox.getChildren().addAll(datePicker.createDatePicker(),dateLabel, buttonBox);
-        ((HBox) dateBox).setSpacing(90);
+        ((HBox) dateBox).setSpacing(70);
 
         suffix = datePicker.currentDate();  //set suffix to current date for the first time initialising the date controller
         //datePicker.startDatePicker();
@@ -145,7 +146,7 @@ public class menu extends Application {
     }
 
     /**
-     * Create information panel
+     * Create information panel (Right panel)
      * @param parent
      */
     public void createInformationPanel(Pane parent){
@@ -195,7 +196,7 @@ public class menu extends Application {
         Button deleteButton = new Button("Delete"); //Level 2
         deleteButton.setPrefWidth(70);
         deleteButton.setPrefHeight(20);
-        deleteButton.setOnAction(this::deleteClient);   //Set delete client action
+        deleteButton.setOnAction(this::deleteClientAction);   //Set delete client action
 
 
         ((VBox) mainInformationBox).setSpacing(30);
@@ -208,7 +209,7 @@ public class menu extends Application {
      * Creation of the top menu bar
      * @param parent
      */
-    public void menuBar(Pane parent)
+    public void createMenuBar(Pane parent)
     {
         //Creation of the menubar
         MenuBar menubar = new MenuBar();
@@ -226,7 +227,7 @@ public class menu extends Application {
      * Creation of the tableview
      * @param parent
      */
-    public void tableView1(Pane parent)
+    public void createTableView(Pane parent)
     {
         //Creation of the tableView
         parent.getChildren().add(table1);   //add to parent
@@ -247,7 +248,8 @@ public class menu extends Application {
 
                     suffix = datePicker.getSelectedDate();  //Set suffix as the selected date from the date picker
                     //Make the changes to the database
-                    database.editName(t.getTableView().getItems().get(t.getTablePosition().getRow()).getName(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                    database.editName(t.getTableView().getItems().get(t.getTablePosition().getRow()).getName(),
+                            t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
                     database.printClients();    //Print out the current clients in the table
                 }
         );
@@ -265,7 +267,8 @@ public class menu extends Application {
 
                     suffix = datePicker.getSelectedDate();  //Set suffix as the selected date from the date picker
                     //Make the changes to the database
-                    database.editTableNumber(t.getTableView().getItems().get(t.getTablePosition().getRow()).getTableNumber(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                    database.editTableNumber(t.getTableView().getItems().get(t.getTablePosition().getRow()).getTableNumber(),
+                            t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
                     database.printClients();
                 }
         );
@@ -283,7 +286,8 @@ public class menu extends Application {
 
                     suffix = datePicker.getSelectedDate();  //Set suffix as the selected date from the date picker
                     //Make the changes to the database
-                    database.editNumberOfPerson(t.getTableView().getItems().get(t.getTablePosition().getRow()).getNumberOfPerson(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                    database.editNumberOfPerson(t.getTableView().getItems().get(t.getTablePosition().getRow()).getNumberOfPerson(),
+                            t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
                     database.printClients();
                 }
         );
@@ -323,66 +327,41 @@ public class menu extends Application {
 
                     suffix = datePicker.getSelectedDate();  //Set suffix as the selected date from the date picker
                     //Make the changes to the database
-                    database.editComment(t.getTableView().getItems().get(t.getTablePosition().getRow()).getComment(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                    database.editComment(t.getTableView().getItems().get(t.getTablePosition().getRow()).getComment(),
+                            t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
                     database.printClients();
                 }
         );
 
         column6 = new TableColumn<>("Time");
         column6.setCellValueFactory(new PropertyValueFactory<>("time"));
-        choiceBox = FXCollections.observableList(choiceBoxList());
+        choiceBox = FXCollections.observableList(createChoiceBoxList());
         column6.setCellFactory(ComboBoxTableCell.forTableColumn(choiceBox));
         column6.setOnEditCommit(
                 (TableColumn.CellEditEvent<Client,String> t) -> {
-                    ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
-                    ).setTime(t.getNewValue());
-                    System.out.println(((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
-                    ).getTime());
+                    ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())).setTime(t.getNewValue());
+                    System.out.println(((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())).getTime());
                     setLabels();    //Set information panel labels
 
                     suffix = datePicker.getSelectedDate();  //Set suffix as the selected date from the date picker
                     //Make the changes to the database
-                    database.editTime(t.getTableView().getItems().get(t.getTablePosition().getRow()).getTime(), t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                    database.editTime(t.getTableView().getItems().get(t.getTablePosition().getRow()).getTime(),
+                            t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
                     database.printClients();
 
                 }
         );
-
 
         //Add all columns to the table view
         table1.getColumns().addAll(column1,column2,column3,column4,column5, column6);
         table1.getSortOrder().add(column6);
 
         //When press a cell make editing cell true
-        table1.setOnMousePressed(
-                new EventHandler<javafx.scene.input.MouseEvent>() {
-                    @Override
-                    public void handle(javafx.scene.input.MouseEvent mouseEvent) {
-                        if (mouseEvent.getClickCount() == 1) {
-                            if (table1.getSelectionModel().isEmpty()) {  //Table cell selected is empty
-                                informationName = null;
-                                informationPhoneNumber = 1;
-                                informationTableNumber = 0;
-                                informationNumberOfPerson = 0;
-                                informationComment = null;
-                                informationTime = null;
-
-                            } else {  //Selected a populated cell
-                                informationName = table1.getSelectionModel().getSelectedItem().getName();
-                                informationNumberOfPerson = table1.getSelectionModel().getSelectedItem().getNumberOfPerson();
-                                informationTableNumber = table1.getSelectionModel().getSelectedItem().getTableNumber();
-                                informationPhoneNumber = table1.getSelectionModel().getSelectedItem().getPhoneNumber();
-                                informationComment = table1.getSelectionModel().getSelectedItem().getComment();
-                                informationTime = table1.getSelectionModel().getSelectedItem().getTime();
-                            }
-                            setLabels();    //Set information panel labels
-                        }
-                    }
-                }
-        );
+        tableViewAction();
     }
 
-    public static List choiceBoxList() {
+
+    public static List createChoiceBoxList() {
         List finalList = new ArrayList();
         List nightList = new ArrayList();
         nightList.add("20:30");
@@ -464,7 +443,7 @@ public class menu extends Application {
         commentField.setAlignment(Pos.CENTER);
 
 
-        timeChooser = new ComboBox(FXCollections.observableArrayList(choiceBoxList()));
+        timeChooser = new ComboBox(FXCollections.observableArrayList(createChoiceBoxList()));
         setAddingTimeRange();
         timeChooser.setPromptText("Time");
 
@@ -472,7 +451,7 @@ public class menu extends Application {
         Button addButton = new Button("Add");
         addButton.setPrefWidth(100);
         addButton.setPrefHeight(60);
-        addButton.setOnAction(this::addClient);
+        addButton.setOnAction(this::addClientAction);
 
         //Add all components to its pane
         firstLineInformation.getChildren().addAll(nameField, tableNumberField, numberOfPersonField, phoneNumberField);
@@ -499,13 +478,13 @@ public class menu extends Application {
         clientTime.setText(informationTime);
     }
 
-    public static void setTimeRange(){
-        choiceBox = FXCollections.observableList(choiceBoxList());
+    public static void setColumnTimeRange(){
+        choiceBox = FXCollections.observableList(createChoiceBoxList());
         column6.setCellFactory(ComboBoxTableCell.forTableColumn(choiceBox));
     }
 
     public static void setAddingTimeRange(){
-        choiceBox = FXCollections.observableList(choiceBoxList());
+        choiceBox = FXCollections.observableList(createChoiceBoxList());
         timeChooser.setItems(choiceBox);
     }
 
@@ -516,7 +495,7 @@ public class menu extends Application {
      * Adding client action
      * @param actionEvent
      */
-    private void addClient(ActionEvent actionEvent) {   //"\""
+    private void addClientAction(ActionEvent actionEvent) {   //"\""
         try {
             //Create new Client
             String newName = (nameField.getText());
@@ -562,7 +541,7 @@ public class menu extends Application {
      * why cannot separate this event into an independent event instead of being inside the tableview method
      * @param event
      */
-    public void cellEditing(MouseEvent event){
+    public void cellEditingAction(MouseEvent event){
         new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
             public void handle(javafx.scene.input.MouseEvent mouseEvent) {
@@ -593,7 +572,7 @@ public class menu extends Application {
      * Delete client action
      * @param event
      */
-    private void deleteClient(ActionEvent event){
+    private void deleteClientAction(ActionEvent event){
         try{
             //Recognise the selected client
             Client deletedClient = table1.getSelectionModel().getSelectedItem();
@@ -628,30 +607,58 @@ public class menu extends Application {
         }
     }
 
-    private void makeDay(ActionEvent event){
+    public void tableViewAction(){
+        table1.setOnMousePressed(
+                new EventHandler<javafx.scene.input.MouseEvent>() {
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent mouseEvent) {
+                        if (mouseEvent.getClickCount() == 1) {
+                            if (table1.getSelectionModel().isEmpty()) {  //Table cell selected is empty
+                                informationName = null;
+                                informationPhoneNumber = 1;
+                                informationTableNumber = 0;
+                                informationNumberOfPerson = 0;
+                                informationComment = null;
+                                informationTime = null;
+
+                            } else {  //Selected a populated cell
+                                informationName = table1.getSelectionModel().getSelectedItem().getName();
+                                informationNumberOfPerson = table1.getSelectionModel().getSelectedItem().getNumberOfPerson();
+                                informationTableNumber = table1.getSelectionModel().getSelectedItem().getTableNumber();
+                                informationPhoneNumber = table1.getSelectionModel().getSelectedItem().getPhoneNumber();
+                                informationComment = table1.getSelectionModel().getSelectedItem().getComment();
+                                informationTime = table1.getSelectionModel().getSelectedItem().getTime();
+                            }
+                            setLabels();    //Set information panel labels
+                        }
+                    }
+                });
+    }
+
+    private void makeDayAction(ActionEvent event){
         isDay = true;
         System.out.println(datePicker.selectedDate);
         //System.out.println(getSelectedDate());
         //System.out.println(currentDate());
-        menu.observableClientList.clear();
-        menu.database.startTable(datePicker.getSelectedDate());
+        observableClientList.clear();
+        database.startTable(datePicker.getSelectedDate());
 
-        setTimeRange();
+        setColumnTimeRange();
         setAddingTimeRange();
 
         datePicker.setDateText();
     }
 
-    private void makeNight(ActionEvent event){
+    private void makeNightAction(ActionEvent event){
         isDay = false;
         System.out.println(datePicker.selectedDate);
         //System.out.println(getSelectedDate());
         //System.out.println(currentDate());
-        menu.observableClientList.clear();
-        menu.database.startTable(datePicker.getSelectedDate());
+        observableClientList.clear();
+        database.startTable(datePicker.getSelectedDate());
         isDay = false;
 
-        setTimeRange();
+        setColumnTimeRange();
         setAddingTimeRange();
         datePicker.setDateText();
     }
