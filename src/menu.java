@@ -1,3 +1,6 @@
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
@@ -19,9 +22,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LongStringConverter;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -67,11 +72,11 @@ public class menu extends Application {
         //Creation of the root pane
         Pane root = new HBox();
         //Creation of the two subpanels
-            Pane tablePanel = new VBox();
-            Pane informationPanel = new VBox();
-         root.getChildren().addAll(tablePanel, informationPanel);
+        Pane tablePanel = new VBox();
+        Pane informationPanel = new VBox();
+        root.getChildren().addAll(tablePanel, informationPanel);
 
-         //tablePanel components
+        //tablePanel components
         createMenuBar(tablePanel);      //Add menuBar
         createDatePicker(tablePanel); //Add date picker
         createTableView(tablePanel);   //Add tableView
@@ -106,17 +111,19 @@ public class menu extends Application {
 
     /**
      * Add new clients to the client observable list
+     *
      * @param client
      */
-    public static void addToObservableList(Client client){
+    public static void addToObservableList(Client client) {
         observableClientList.add(client);
     }
 
     /**
      * Create date picker
+     *
      * @param parent
      */
-    public void createDatePicker(Pane parent){
+    public void createDatePicker(Pane parent) {
         Pane dateBox = new HBox();
 
         datePicker = new DateController();
@@ -136,7 +143,7 @@ public class menu extends Application {
         Pane buttonBox = new HBox();
         buttonBox.getChildren().addAll(dayButton, nightButton);
 
-        dateBox.getChildren().addAll(datePicker.createDatePicker(),dateLabel, buttonBox);
+        dateBox.getChildren().addAll(datePicker.createDatePicker(), dateLabel, buttonBox);
         ((HBox) dateBox).setSpacing(70);
 
         suffix = datePicker.currentDate();  //set suffix to current date for the first time initialising the date controller
@@ -147,15 +154,18 @@ public class menu extends Application {
 
     /**
      * Create information panel (Right panel)
+     *
      * @param parent
      */
-    public void createInformationPanel(Pane parent){
+    public void createInformationPanel(Pane parent) {
 
         Pane mainInformationBox = new VBox();   //Level 1
         parent.getChildren().add(mainInformationBox);
 
         Label informationTitle = new Label("INFORMATION");  //Level 2
         informationTitle.setFont(new Font("Potra", 20));
+
+        createClock(mainInformationBox); //Level 2
 
         Pane nameLine = new HBox(); //Level 2
         Label fixedName = new Label("Name:");   //Level 3
@@ -202,8 +212,25 @@ public class menu extends Application {
         ((VBox) mainInformationBox).setSpacing(30);
 
         mainInformationBox.getChildren().addAll(informationTitle, nameLine, tableNumberLine, numberOfPersonLine, phoneNumberLine, commentLine, timeLine, deleteButton);
-        mainInformationBox.setPadding(new Insets(20,0,0,20));
+        mainInformationBox.setPadding(new Insets(20, 0, 0, 20));
     }
+
+    public void createClock(Pane parent) {
+        Label time = new Label();
+        parent.getChildren().add(time);
+        time.setFont(new Font("Potra", 20));
+
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            int second = LocalDateTime.now().getSecond();
+            int minute = LocalDateTime.now().getMinute();
+            int hour = LocalDateTime.now().getHour();
+            time.setText(hour + ":" + (minute) + ":" + second);
+        }),
+                new KeyFrame(Duration.seconds(1))
+        );
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+}
 
     /**
      * Creation of the top menu bar
