@@ -1,0 +1,38 @@
+.table-view {
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-base: #000000;
+	-fx-background-color: #000000;
+}
+.root{
+    -fx-background-color: #000000;
+}
+
+.label{
+	-fx-text-fill: #FFFFFF;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 35;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+    -fx-border-color:
+        transparent
+        transparent
+        derive(-fx-base, 80%)
+        transparent;
+        }
+
+        .table-view .column-header .label {
+            -fx-font-family: "Segoe UI Light";
+            -fx-text-fill: white;
+            -fx-alignment: center;
+            -fx-opacity: 1;
+        }
+
+        .table-view .table-cell{
+            -fx-text-fill: white;
+        }
+.table-row-cell{
+    -fx-background-color: -fx-table-cell-border-color, #000000;
+}

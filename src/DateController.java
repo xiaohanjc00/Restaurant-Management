@@ -40,6 +40,7 @@ public class DateController {
 
     public DatePicker createDatePicker() {
         date = new DatePicker(LocalDate.now());
+        date.getStyleClass().add("date");
 
         EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
             @Override

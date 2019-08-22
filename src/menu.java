@@ -27,6 +27,7 @@ import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LongStringConverter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -169,36 +170,48 @@ public class menu extends Application {
 
         Pane nameLine = new HBox(); //Level 2
         Label fixedName = new Label("Name:");   //Level 3
+        fixedName.setMinWidth(100);
+        fixedName.setMaxWidth(100);
         clientName = new Label(informationName);    //Level 3
         nameLine.getChildren().addAll(fixedName, clientName);
         ((HBox) nameLine).setSpacing(20);
 
         Pane numberOfPersonLine = new HBox();   //Level 2
         Label fixedNumberOfPerson = new Label("Number of Person:"); //Level 3
+        fixedNumberOfPerson.setMinWidth(100);
+        fixedNumberOfPerson.setMaxWidth(100);
         clientNumberOfPerson = new Label(informationNumberOfPerson + " ");  //Level 3
         numberOfPersonLine.getChildren().addAll(fixedNumberOfPerson, clientNumberOfPerson);
         ((HBox) numberOfPersonLine).setSpacing(20);
 
         Pane tableNumberLine = new HBox();  //Level 2
         Label fixedTableNumber = new Label("Table Number:");    //Level 3
+        fixedTableNumber.setMinWidth(100);
+        fixedTableNumber.setMaxWidth(100);
         clientTableNumber = new Label(informationTableNumber + " ");    //Level 3
         tableNumberLine.getChildren().addAll(fixedTableNumber, clientTableNumber);
         ((HBox) tableNumberLine).setSpacing(20);
 
         Pane phoneNumberLine = new HBox();  //Level 2
         Label fixedPhoneNumber = new Label("Phone Number:");    //Level 3
+        fixedPhoneNumber.setMinWidth(100);
+        fixedPhoneNumber.setMaxWidth(100);
         clientPhoneNumber = new Label(informationPhoneNumber + " ");    //Level 3
         phoneNumberLine.getChildren().addAll(fixedPhoneNumber, clientPhoneNumber);
         ((HBox) phoneNumberLine).setSpacing(20);
 
         Pane commentLine = new HBox();  //Level 2
         Label fixedComment = new Label("Comment:"); //Level 3
+        fixedComment.setMinWidth(100);
+        fixedComment.setMaxWidth(100);
         clientComment = new Label(informationComment);  //Level 3
         commentLine.getChildren().addAll(fixedComment, clientComment);
         ((HBox) commentLine).setSpacing(20);
 
         Pane timeLine = new HBox();  //Level 2
         Label fixedTime = new Label("Time:"); //Level 3
+        fixedTime.setMinWidth(100);
+        fixedTime.setMaxWidth(100);
         clientTime = new Label(informationComment);  //Level 3
         timeLine.getChildren().addAll(fixedTime, clientTime);
         ((HBox) timeLine).setSpacing(20);
@@ -221,10 +234,8 @@ public class menu extends Application {
         time.setFont(new Font("Potra", 20));
 
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            int second = LocalDateTime.now().getSecond();
-            int minute = LocalDateTime.now().getMinute();
-            int hour = LocalDateTime.now().getHour();
-            time.setText(hour + ":" + (minute) + ":" + second);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            time.setText(LocalDateTime.now().format(formatter));
         }),
                 new KeyFrame(Duration.seconds(1))
         );
@@ -241,6 +252,7 @@ public class menu extends Application {
         //Creation of the menubar
         MenuBar menubar = new MenuBar();
         parent.getChildren().add(menubar);
+        menubar.getStyleClass().add("menubar");
 
         //Add tools, help and about menus
         Menu toolsMenu = new Menu("Tools");
