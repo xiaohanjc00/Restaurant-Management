@@ -108,6 +108,7 @@ public class menu extends Application {
         primaryStage.setScene(scene);
         primaryStage.setMinWidth(1000);
         primaryStage.show();
+
     }
 
     /**

@@ -1,97 +1,155 @@
-.root{
-    -fx-background-color: #31312F;
-}
+ /*root*/
+ .root{
+        -fx-background-color: #31312F;
+ }
 
-.label{
-	-fx-text-fill: #FFFFFF;
-}
+ /*All labels*/
+ .label{
+	    -fx-text-fill: #FFFFFF;
+ }
 
-.table-cell{
-    -fx-border-color: transparent;
-    -fx-box-border: transparent;
-    -fx-text-fill: whitesmoke;
-    -fx-font-weight: bold;
-}
+ /*table cells*/
+ .table-cell{
+        -fx-border-color: transparent;
+        -fx-box-border: transparent;
+        -fx-text-fill: whitesmoke;
+        -fx-font-weight: bold;
+ }
 
-.table-cell:filled:hover {
-    -fx-background-color: #EE8C00;
-}
+ /*hover over filled cell*/
+ .table-cell:filled:hover {
+        -fx-background-color: #EE8C00;
+ }
 
-.table-row-cell:empty {
-    -fx-background-color: #31312F;
-    }
+ /*empty row color*/
+ .table-row-cell:empty {
+        -fx-background-color: #31312F;
+ }
 
-    .table-row-cell:empty .table-cell {
+ /*empty cells border*/
+ .table-row-cell:empty .table-cell {
         -fx-border-width: 0px;
-        }
+ }
 
-    .table-view:row-selection .table-row-cell:filled:hover {
-    -fx-background-color: #EEAE43;
-    }
-
-    .table-view:row-selection .table-row-cell:filled:selected {
+ /*When how over filled row*/
+ .table-view:row-selection .table-row-cell:filled:hover {
         -fx-background-color: #EEAE43;
-    }
+ }
 
-.table-view .column-header .label{
-    -fx-text-fill: #FFFFFF;
-    -fx-alignment: CENTER;
-}
+ /*When select filled row*/
+ .table-view:row-selection .table-row-cell:filled:selected {
+        -fx-background-color: #EEAE43;
+ }
 
-.table-view .column-header, .table-view .filler {
-    -fx-background-color: #31312F;
-    -fx-border-color: -fx-box-border;
-}
+ /*column name label*/
+ .table-view .column-header .label{
+        -fx-text-fill: #FFFFFF;
+        -fx-alignment: CENTER;
+ }
 
-.table-view .column-header:hover {
-    -fx-background-color: #585354;
-}
+ /*column name background and border*/
+ .table-view .column-header, .table-view .filler {
+        -fx-background-color: #31312F;
+        -fx-border-color: -fx-box-border;
+ }
 
-.table-row-cell:filled{
-    -fx-background-color: grey;
-}
+ /*column name hover action*/
+ .table-view .column-header:hover {
+        -fx-background-color: #585354;
+ }
 
-.table-row-cell:filled:odd {
-    -fx-background-color: grey;
-}
+ /*table rows that are not empty*/
+ .table-row-cell:filled{
+        -fx-background-color: grey;
+ }
 
-.table-view{
-   -fx-background-color: transparent;
-   -fx-border-color: whitesmoke;
-}
+ /*Odd row cells are grey*/
+ .table-row-cell:filled:odd {
+        -fx-background-color: grey;
+ }
 
+ /*Main table*/
+ .table-view{
+        -fx-background-color: transparent;
+        -fx-border-color: whitesmoke;
+ }
 
-.menubar{
-    -fx-background-color: #31312F;
-}
+ /*Menubar*/
+ .menubar{
+        -fx-background-color: #31312F;
+ }
 
-.text-field{
-    -fx-background-color: transparent;
-    -fx-border-color: whitesmoke;
-    -fx-text-fill: whitesmoke;
-}
+ /*All textfields*/
+ .text-field{
+        -fx-background-color: transparent;
+        -fx-border-color: whitesmoke;
+        -fx-text-fill: whitesmoke;
+ }
 
-.button{
-    -fx-background-color: #EEAE43;
-    -fx-text-fill: whitesmoke;
-    -fx-font-weight: bold;
-}
+ /*All buttons*/
+ .button{
+        -fx-background-color: #EEAE43;
+        -fx-text-fill: #31312F;
+        -fx-font-weight: bold;
+ }
 
-.date, .date .text-field{
-    -fx-background-color: #31312F;
-    -fx-text-fill: whitesmoke;
-}
+ /*datePicker textfield*/
+ .date, .date .text-field{
+        -fx-background-color: #31312F;
+        -fx-text-fill: whitesmoke;
+ }
 
-.date {
-    -fx-text-fill: black;
-}
+ /*Button to show datepicker popup*/
+ .date-picker > .arrow-button {
+        -fx-background-color: #31312F;
+        -fx-border-color: whitesmoke;
+ }
 
-.date-picker-popup > .month-year-pane {
-    -fx-background-color: #31312F;
-}
+ /*Month and year chooser within popup*/
+ .date-picker-popup > .month-year-pane {
+        -fx-background-color: #31312F;
+ }
 
-.date-picker > .arrow-button {
-    -fx-background-color: #31312F;
-    -fx-border-color: whitesmoke;
+ /*DatePicker button within popup*/
+ .date-picker .button {
+        -fx-background-color: transparent;
+        -fx-border-color:transparent;
+ }
 
-}
+ /*DatePicker date cells*/
+  .date-picker .cell {
+        -fx-background-color: #31312F;
+        -fx-text-fill: whitesmoke;
+  }
+
+ /*combobox text cell*/
+  .combo-box .list-cell{
+        -fx-background-color: #31312F;
+        -fx-text-fill: whitesmoke;
+        -fx-border-color: #31312F;
+  }
+
+ /*combo box list*/
+  .combo-box-popup .list-view
+  {
+        -fx-background-color: #31312F;
+        -fx-text-fill: whitesmoke;
+        -fx-border-color: transparent;
+  }
+
+ /*combo box base*/
+  .combo-box-base {
+      -fx-background-color: #31312F;
+      -fx-border-color: whitesmoke;
+  }
+
+ /*Hover over combobox list*/
+  .combo-box-popup .list-view .list-cell:filled:hover{
+      -fx-background-color: #585354;
+      -fx-text-fill: whitesmoke;
+  }
+
+ /*Scroll bar transparent*/
+  .scroll-bar:horizontal, .scroll-bar:vertical{
+      -fx-background-color:transparent;
+  }
