@@ -1,7 +1,4 @@
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 public class Client
 {
@@ -13,10 +10,13 @@ public class Client
     private SimpleLongProperty phoneNumber;
     private SimpleStringProperty comment;
     private SimpleStringProperty time;
+    private SimpleBooleanProperty arrived;
     //private Time time;
     private Table table;
     private Tables tables;
-    public Client(String name, int tableNumber, int numberOfPerson, long phoneNumber, String comment, String time)
+
+
+    public Client(String name, int tableNumber, int numberOfPerson, long phoneNumber, String comment, String time, boolean arrived)
     {
         this.tableNumber = new SimpleIntegerProperty(tableNumber);
         this.numberOfPerson = new SimpleIntegerProperty(numberOfPerson);
@@ -26,6 +26,7 @@ public class Client
         this.phoneNumber = new SimpleLongProperty(phoneNumber);
         this.comment = new SimpleStringProperty(comment);
         this.time = new SimpleStringProperty(time);
+        this.arrived = new SimpleBooleanProperty(arrived);
         table=null;
     }
 
@@ -83,6 +84,16 @@ public class Client
         time.set(newTime);
     }
 
+    //arrived
+    public BooleanProperty arrivedProperty(){return arrived;}
+
+    public boolean getArrived() {
+        return arrived.get();
+    }
+
+    public void setArrived(boolean newArrived) {
+        arrived.set(newArrived);
+    }
 
 
     /**

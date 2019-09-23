@@ -3,6 +3,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -13,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -22,6 +27,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LongStringConverter;
@@ -32,6 +38,7 @@ import java.util.*;
 
 
 public class menu extends Application {
+
 
     public static void main(String[] args) {
         launch(args);
@@ -106,7 +113,7 @@ public class menu extends Application {
         scene.getStylesheets().add("edit.css");
         primaryStage.setTitle("Restaurant Management");
         primaryStage.setScene(scene);
-        primaryStage.setMinWidth(1000);
+        primaryStage.setMinWidth(1050);
         primaryStage.show();
 
     }
@@ -134,8 +141,8 @@ public class menu extends Application {
 
         dateLabel = new Label(datePicker.printDateText());
         dateLabel.setFont(new Font("Potra", 20));
-        dateLabel.setMaxWidth(350);
-        dateLabel.setMinWidth(350);
+        dateLabel.setMaxWidth(390);
+        dateLabel.setMinWidth(390);
 
         Button dayButton = new Button("Day  ");
         dayButton.setOnAction(this::makeDayAction);
@@ -146,7 +153,7 @@ public class menu extends Application {
         buttonBox.getChildren().addAll(dayButton, nightButton);
 
         dateBox.getChildren().addAll(datePicker.createDatePicker(), dateLabel, buttonBox);
-        ((HBox) dateBox).setSpacing(70);
+        ((HBox) dateBox).setSpacing(60);
 
         suffix = datePicker.currentDate();  //set suffix to current date for the first time initialising the date controller
         //datePicker.startDatePicker();
@@ -223,16 +230,17 @@ public class menu extends Application {
         deleteButton.setOnAction(this::deleteClientAction);   //Set delete client action
 
 
-        ((VBox) mainInformationBox).setSpacing(30);
+        ((VBox) mainInformationBox).setSpacing(25);
 
         mainInformationBox.getChildren().addAll(informationTitle, nameLine, tableNumberLine, numberOfPersonLine, phoneNumberLine, commentLine, timeLine, deleteButton);
-        mainInformationBox.setPadding(new Insets(20, 0, 0, 20));
+        mainInformationBox.setPadding(new Insets(0, 0, 0, 20));
     }
 
     public void createClock(Pane parent) {
         Label time = new Label();
         parent.getChildren().add(time);
-        time.setFont(new Font("Potra", 20));
+        time.setFont(new Font("Potra", 30));
+        time.setPadding(new Insets(20,0,0,0));
 
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -391,9 +399,82 @@ public class menu extends Application {
 
                 }
         );
+        // "Selected" column
+        TableColumn<Client, Boolean> column7 = new TableColumn<Client, Boolean>("selected");
+
+        /*
+        column7.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Client, Boolean>, ObservableValue<Boolean>>() {
+        Client client0;
+            @Override
+            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Client, Boolean> arrived) {
+                    Client client0 = arrived.getValue();
+
+                    CheckBox checkBox = new CheckBox();
+
+                    checkBox.selectedProperty().setValue(client0.getArrived());
+
+
+
+                    checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                        public void changed(ObservableValue<? extends Boolean> ov,
+                                            Boolean old_val, Boolean new_val) {
+
+                            client0.setArrived(new_val);
+
+                        }
+                    });
+                    return client0.arrivedProperty();
+            }
+
+         */
+
+
+
+
+
+
+
+        column7.setCellValueFactory(
+                new Callback<TableColumn.CellDataFeatures<Client, Boolean>, ObservableValue<Boolean>>() {
+                @Override
+                    public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Client, Boolean> param) {
+
+
+                        column7.setOnEditCommit(
+                            (TableColumn.CellEditEvent<Client, Boolean> t) -> {
+                                ((Client) t.getTableView().getItems().get(t.getTablePosition().getRow())
+                                ).setArrived(t.getNewValue());
+                                setLabels();    //Set information panel labels
+
+                                suffix = datePicker.getSelectedDate();  //Set suffix as the selected date from the date picker
+                                //Make the changes to the database
+                                database.editArrived(t.getTableView().getItems().get(t.getTablePosition().getRow()).getArrived(),
+                                        t.getTableView().getItems().get(t.getTablePosition().getRow()).getPhoneNumber());
+                                database.printClients();
+                            }
+                        );
+
+                    return param.getValue().arrivedProperty();
+
+                }
+         });
+
+
+        column7.setCellValueFactory(cellData -> cellData.getValue().arrivedProperty());
+
+
+        column7.setCellFactory(CheckBoxTableCell.forTableColumn(column7));
+
+
+        ;
+
+
+
+
+
 
         //Add all columns to the table view
-        table1.getColumns().addAll(column1,column2,column3,column4,column5, column6);
+        table1.getColumns().addAll(column1,column2,column3,column4,column5, column6, column7);
         table1.getSortOrder().add(column6);
 
         //When press a cell make editing cell true
@@ -544,7 +625,7 @@ public class menu extends Application {
             int newNumberOfPerson = Integer.parseInt(numberOfPersonField.getText());
             long newPhoneNumber = Long.parseLong(phoneNumberField.getText());
             String newTime = timeChooser.getSelectionModel().getSelectedItem().toString();
-            Client newClient = new Client(newName, newTableNumber, newNumberOfPerson, newPhoneNumber, newComment, newTime);
+            Client newClient = new Client(newName, newTableNumber, newNumberOfPerson, newPhoneNumber, newComment, newTime, false);
 
             //Add the new client to it corresponding database table
             database.addClient(newClient, datePicker.getSelectedDate());
@@ -703,3 +784,15 @@ public class menu extends Application {
         datePicker.setDateText();
     }
 }
+
+/*
+
+
+                new Callback<TableColumn<Client, Boolean>, TableCell<Client, Boolean>>() {
+                 @Override
+                    public TableCell<Client, Boolean> call(TableColumn<Client, Boolean> booleanTableColumn) {
+                        return new CheckBoxTableCell<>();
+                    }
+        });
+
+ */

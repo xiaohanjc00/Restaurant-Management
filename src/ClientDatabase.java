@@ -7,7 +7,7 @@ import java.sql.*;
 public class ClientDatabase {
     //JDBC driver name and database URL
     static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:~/test10";
+    static final String DB_URL = "jdbc:h2:~/test12";
 
     //Database credentials
     static final String USER = "sa";
@@ -47,9 +47,10 @@ public class ClientDatabase {
                 long phoneNumber = rs.getLong("phoneNumber");
                 String comment = rs.getString("comment");
                 String time = rs.getString("time");
+                Boolean arrived = rs.getBoolean("arrived");
 
                 //Create new client with the information above from the database
-                Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment, time);
+                Client newClient = new Client(name, tableNumber, numberOfPerson, phoneNumber, comment, time, arrived);
                 menu.addToObservableList(newClient);     //Add the new client to the observable list in the menu class
                 menu.setColumnTimeRange();
             }
@@ -64,6 +65,7 @@ public class ClientDatabase {
                     " phoneNumber BIGINT, " +
                     " comment VARCHAR(255)," +
                     " time VARCHAR(255)," +
+                    " arrived BOOLEAN," +
                     " PRIMARY KEY ( phoneNumber,name ))";
             try {
                 System.out.println("Creating new table for the current date...");
@@ -114,6 +116,7 @@ public class ClientDatabase {
                     " phoneNumber BIGINT, " +
                     " comment VARCHAR(255)," +
                     " time VARCHAR(255)," +
+                    " arrived BOOLEAN," +
                     " PRIMARY KEY ( phoneNumber,name ))";
 
             stmt.executeUpdate(sql2);
@@ -146,6 +149,7 @@ public class ClientDatabase {
                 long phoneNumber = rs.getLong("phoneNumber");
                 String comment = rs.getString("comment");
                 String time = rs.getString("time");
+                boolean arrived = rs.getBoolean("arrived");
 
                 // Display values
                 System.out.println("---------------------------------------------------------------------------------");
@@ -155,6 +159,7 @@ public class ClientDatabase {
                 System.out.println(", phoneNumber: " + phoneNumber);
                 System.out.println("|, comment: " + comment);
                 System.out.println("|, time: " + time);
+                System.out.println("|, arrived: " + arrived);
                 System.out.println("---------------------------------------------------------------------------------");
 
 
@@ -185,6 +190,7 @@ public class ClientDatabase {
                 long phoneNumber = rs.getLong("phoneNumber");
                 String comment = rs.getString("comment");
                 String time = rs.getString("time");
+                Boolean arrived = rs.getBoolean("arrived");
 
                 // Display values
                 System.out.println("---------------------------------------------------------------------------------");
@@ -194,6 +200,7 @@ public class ClientDatabase {
                 System.out.println(", phoneNumber: " + phoneNumber);
                 System.out.println("|, comment: " + comment);
                 System.out.println("|, time: " + time);
+                System.out.println("|arrived: " + arrived);
                 System.out.println("---------------------------------------------------------------------------------");
             }
 
@@ -215,7 +222,8 @@ public class ClientDatabase {
                     newClient.getNumberOfPerson() + "'" + "," +"'" +
                     newClient.getPhoneNumber() + "'" + "," +"'" +
                     newClient.getComment() + "'" + "," +"'" +
-                    newClient.getTime() + "'" +  ")";
+                    newClient.getTime() + "'" + "," +"'" +
+                    newClient.getArrived() + "'" +  ")";
             System.out.println("");
             System.out.println("=====================================================================================");
             System.out.println("Inserting new values...");
@@ -237,7 +245,7 @@ public class ClientDatabase {
      */
     public void deleteClient(Client newClient, String suffix){
         try{
-            String sql = "INSERT INTO DELETEDCLIENT (name, tableNumber, numberOfPerson, phoneNumber, comment, time) " +
+            String sql = "INSERT INTO DELETEDCLIENT (name, tableNumber, numberOfPerson, phoneNumber, comment, time, arrived) " +
                     "SELECT * " +
                     "FROM CLIENT" + suffix +
                     " WHERE (name = " + "'" + newClient.getName() + "'" + " AND " +
@@ -245,14 +253,16 @@ public class ClientDatabase {
                     "numberOfPerson = " + "'" + newClient.getNumberOfPerson() + "'" + " AND " +
                     "phoneNumber = " + "'" + newClient.getPhoneNumber() + "'" + " AND " +
                     "comment = " + "'" + newClient.getComment() + "'" + " AND " +
-                    "time = " + "'" + newClient.getTime() + "' )" ;
+                    "time = " + "'" + newClient.getTime() + "'" + " AND " +
+                    "arrived = " + "'" + newClient.getArrived() + "' )" ;
             String sql2 = "DELETE FROM CLIENT" + suffix +
                     " WHERE (name = " + "'" + newClient.getName() + "'" + " AND " +
                     "tableNumber = " + "'" + newClient.getTableNumber() + "'" + " AND " +
                     "numberOfPerson = " + "'" + newClient.getNumberOfPerson() + "'" + " AND " +
                     "phoneNumber = " + "'" + newClient.getPhoneNumber() + "'" + " AND " +
                     "comment = " + "'" + newClient.getComment() + "'" + " AND " +
-                    "time = " + "'" + newClient.getTime() + "' )" ;
+                    "time = " + "'" + newClient.getTime() + "'" + " AND " +
+                    "arrived = " + "'" + newClient.getArrived() + "' )" ;
 
             stmt.executeUpdate(sql);
             stmt.executeUpdate(sql2);
@@ -361,6 +371,18 @@ public class ClientDatabase {
         try{
             String sql = "UPDATE CLIENT" + menu.suffix +
                     " SET time = " + "'" + newTime + "'" +
+                    "WHERE phoneNumber = " + "'" + phoneNumber + "'";
+            stmt.executeUpdate(sql);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void editArrived(Boolean newArrived, long phoneNumber){
+        try{
+            String sql = "UPDATE CLIENT" + menu.suffix +
+                    " SET arrived = " + "'" + newArrived + "'" +
                     "WHERE phoneNumber = " + "'" + phoneNumber + "'";
             stmt.executeUpdate(sql);
         }
