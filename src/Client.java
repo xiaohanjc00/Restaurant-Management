@@ -16,6 +16,7 @@ public class Client
     private Tables tables;
 
 
+
     public Client(String name, int tableNumber, int numberOfPerson, long phoneNumber, String comment, String time, boolean arrived)
     {
         this.tableNumber = new SimpleIntegerProperty(tableNumber);
@@ -104,41 +105,41 @@ public class Client
     {
         name = newName;
     }
-    
+
     public int addSinglePerson()
     {
         numberOfPerson+=1;
         return numberOfPerson;
     }
-    
+
     public int addPerson(int newPeople)
     {
         numberOfPerson+=newPeople;
         return numberOfPerson;
     }
-    
+
     public int removeSinglePerson()
     {
-        numberOfPerson-=1;  
+        numberOfPerson-=1;
         return numberOfPerson;
     }
-    
+
     public int removePerson(int removedPeople)
     {
         numberOfPerson-=removedPeople;
         return numberOfPerson;
     }
-    
+
     public void addComment(String newComment)
     {
         comment=newComment;
     }
-    
+
     public void removeComment()
     {
         comment=null;
     }
-    
+
     public int tableNumber()
     {
         return tableNumber;
